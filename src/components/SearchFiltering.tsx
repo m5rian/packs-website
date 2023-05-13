@@ -90,6 +90,5 @@ const FilterOption = styled.p`
 
   &:hover {
     background-color: var(--primary-3);
-    cursor: pointer;
   }
 `
