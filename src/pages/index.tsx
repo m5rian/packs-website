@@ -3,7 +3,7 @@ import {GetStaticPropsContext} from "next";
 import {TexturePackCard} from "@/components/TexturePackCard";
 import SearchFiltering from "@/components/SearchFiltering";
 import {PackDetails} from "@/types/TexturePack";
-import {createContext, useState} from "react";
+import {useState} from "react";
 
 interface PageProps {
     packs: PackDetails[]
@@ -33,6 +33,8 @@ export type SortType = "name" | "date" | "downloads"
 export default function Home(props: PageProps) {
     const {packs} = props;
     const [sortType, setSortType] = useState<SortType>("name")
+    const [searchQuery, setSearchQuery] = useState("")
+
     function getSortedPacks(): PackDetails[] {
         let sortedPacks = packs.slice() // Copy original array
         switch (sortType) {
@@ -46,15 +48,13 @@ export default function Home(props: PageProps) {
                 sortedPacks.sort((a, b) => a.downloads - b.downloads)
                 break
         }
-        return sortedPacks
+        return sortedPacks.filter(pack => pack.name.toLowerCase().includes(searchQuery.toLowerCase()))
     }
 
     return (
         <Container>
             <h1>Texture Packs</h1>
-
-            <SearchFiltering handleSortBy={setSortType}/>
-
+            <SearchFiltering handleSortBy={setSortType} updateSearchQuery={setSearchQuery} />
             <TexturePacksContainer>
                 {getSortedPacks().map((pack, index) => (
                     <TexturePackCard pack={pack} key={index}/>

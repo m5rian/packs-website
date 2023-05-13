@@ -1,14 +1,16 @@
 import styled from "@emotion/styled";
 import {BiSortAlt2} from "react-icons/bi";
 import {SortType} from "@/pages";
+
 interface Props {
-    handleSortBy: (sortType: SortType) => void
+    handleSortBy: (sortType: SortType) => void,
+    updateSearchQuery: (query: string) => void
 }
 
-export default function SearchFiltering({handleSortBy}: Props) {
+export default function SearchFiltering({handleSortBy, updateSearchQuery}: Props) {
     return (
         <FilterContainer>
-            <SearchInput type="text" placeholder="search"/>
+            <SearchInput onChange={event => updateSearchQuery(event.target.value)} type="text" placeholder="search"/>
             <SortByButton>
                 <SortIconWrapper>
                     <BiSortAlt2/>
