@@ -68,12 +68,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2.5rem;
+  gap: 1rem;
 `
 
 const TexturePacksContainer = styled.div`
   width: 80%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
+  gap: 2.5rem;
 `
