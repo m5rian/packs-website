@@ -8,7 +8,10 @@
 @media (prefers-color-scheme: dark) {
     :root {
         --primary-1: #FFFF;
-        --primary-2: #f6f5f4;
+        --primary-2: #F6F5F4;
+        --primary-3: #E7E6E5;
+
+        --border: solid 1px rgba(0, 0, 0, .1);
 
         --secondary-1: hsl(0deg, 0%, 0%);
         --secondary-2: hsl(0deg, 0%, 25%);

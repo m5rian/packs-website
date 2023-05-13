@@ -16,9 +16,9 @@ export default function SearchFiltering({handleSortBy}: Props) {
                 <p>Sort By</p>
 
                 <SortingOptionsContainer>
-                    <p onClick={() => handleSortBy("name")}> Name</p>
-                    <p onClick={() => handleSortBy("date")}>Date</p>
-                    <p onClick={() => handleSortBy("downloads")}>Downloads</p>
+                    <FilterOption onClick={() => handleSortBy("name")}>Name</FilterOption>
+                    <FilterOption onClick={() => handleSortBy("date")}>Date</FilterOption>
+                    <FilterOption onClick={() => handleSortBy("downloads")}>Downloads</FilterOption>
                 </SortingOptionsContainer>
             </SortByButton>
         </FilterContainer>
@@ -69,7 +69,6 @@ const SortIconWrapper = styled.div`
 const SortingOptionsContainer = styled.div`
   position: absolute;
   background-color: var(--primary-2);
-  padding: 1rem;
   top: 4rem;
 
   display: none;
@@ -78,4 +77,16 @@ const SortingOptionsContainer = styled.div`
   gap: .5rem;
 
   border-radius: var(--border-radius);
+`
+
+const FilterOption = styled.p`
+  width: 100%;
+  padding: .75rem 1rem;
+  text-align: start;
+  border-radius: var(--border-radius);
+
+  &:hover {
+    background-color: var(--primary-3);
+    cursor: pointer;
+  }
 `
