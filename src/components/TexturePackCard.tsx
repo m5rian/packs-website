@@ -5,10 +5,6 @@ type TexturePackCardProps = {
     pack: PackDetails
 }
 
-const PackContainer = styled.div<TexturePackCardProps>`
-    
-`
-
 const ThumbnailImage = styled.img`
   width: 100%;
   aspect-ratio: 16/9;
@@ -22,12 +18,12 @@ const PackInfoContainer = styled.div`
 
 export function TexturePackCard({pack}: TexturePackCardProps) {
     return (
-        <PackContainer pack={pack}>
+        <div>
             <ThumbnailImage src={`https://packs-resources.myra.bot/${pack.folderName}/thumbnail.jpg`}/>
             <PackInfoContainer>
                 <p>{pack.name}</p>
                 <p>{pack.downloads}</p>
             </PackInfoContainer>
-        </PackContainer>
+        </div>
     )
 }
