@@ -79,6 +79,7 @@ const SortingOptionsContainer = styled.div`
   gap: .5rem;
 
   border-radius: var(--border-radius);
+  border: var(--border);
 `
 
 const FilterOption = styled.p`
