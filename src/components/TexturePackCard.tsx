@@ -8,19 +8,17 @@ type TexturePackCardProps = {
 
 export function TexturePackCard({pack}: TexturePackCardProps) {
     return (
-        <PackContainer>
+        <PackContainer href={`/${pack.folderName}`}>
             <ThumbnailImage src={`https://packs-resources.myra.bot/${pack.folderName}/thumbnail.jpg`}/>
             <PackInfoContainer>
-                <Downloads><MdDownload/> {pack.downloads}</Downloads>
+                <Downloads><MdDownload/>{pack.downloads}</Downloads>
             </PackInfoContainer>
         </PackContainer>
     )
 }
 
-const PackContainer = styled.div`
-  &:hover {
-    cursor: pointer;
-  }
+const PackContainer = styled.a`
+
 `
 
 const ThumbnailImage = styled.img`
