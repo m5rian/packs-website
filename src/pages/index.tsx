@@ -32,7 +32,7 @@ export type SortType = "name" | "date-newest" | "date-oldest" | "downloads"
 
 export default function Home(props: PageProps) {
     const {packs} = props;
-    const [sortType, setSortType] = useState<SortType>("name")
+    const [sortType, setSortType] = useState<SortType>("date-newest")
     const [searchQuery, setSearchQuery] = useState("")
 
     function getSortedPacks(): PackDetails[] {
