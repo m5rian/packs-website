@@ -16,6 +16,7 @@
         --secondary-1: hsl(0deg, 0%, 0%);
         --secondary-2: hsl(0deg, 0%, 25%);
         --secondary-3: hsl(0deg, 0%, 35%);
+        --secondary-4: hsl(0deg, 0%, 50%);
     }
 }
 
@@ -47,7 +48,16 @@ h1 {
     font-weight: 800;
     color: var(--secondary-1);
 }
-
+h2 {
+    font-size: 5rem;
+    font-weight: 800;
+    color: var(--secondary-1);
+}
+h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--secondary-1);
+}
 p {
     color: var(--secondary-2);
 }
