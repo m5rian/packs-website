@@ -21,7 +21,7 @@ export default function SearchFiltering({handleSortBy, updateSearchQuery}: Props
                     <FilterOption onClick={() => handleSortBy("name")}>Name</FilterOption>
                     <FilterOption onClick={() => handleSortBy("date-newest")}>Newest</FilterOption>
                     <FilterOption onClick={() => handleSortBy("date-oldest")}>Oldest</FilterOption>
-                    <FilterOption onClick={() => handleSortBy("downloads")}>Downloads</FilterOption>
+                    <FilterOption onClick={() => handleSortBy("downloads")}>Popular</FilterOption>
                 </SortingOptionsContainer>
             </SortByButton>
         </FilterContainer>
