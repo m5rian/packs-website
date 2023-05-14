@@ -28,7 +28,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
     };
 }
 
-export type SortType = "name" | "date" | "downloads"
+export type SortType = "name" | "date-newest" | "date-oldest" | "downloads"
 
 export default function Home(props: PageProps) {
     const {packs} = props;
@@ -41,7 +41,10 @@ export default function Home(props: PageProps) {
             case "name":
                 sortedPacks.sort((a, b) => a.name.localeCompare(b.name))
                 break
-            case "date":
+            case "date-newest":
+                sortedPacks.sort((a, b) => b.releaseDate - a.releaseDate)
+                break
+            case "date-oldest":
                 sortedPacks.sort((a, b) => a.releaseDate - b.releaseDate)
                 break
             case "downloads":
