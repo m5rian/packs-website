@@ -10,7 +10,7 @@ interface PageProps {
     packs: PackDetails[]
 }
 
-export async function getStaticProps(context: GetStaticPropsContext) {
+export async function getStaticProps() {
     const packs = await listFolderFiles("/")
     const packDetailsPromises = packs.map(name => {
         return readFile(`${name}/pack.json`)
