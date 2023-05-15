@@ -3,32 +3,56 @@ import {GetServerSidePropsContext} from "next";
 import styled from "@emotion/styled";
 import ImageCarousel from "@/components/ImageCarousel";
 import {ResourceFileDescription} from "@/types/ResourceFileDescription";
+import {listFolderFiles, readFile} from "@/utils";
 
 interface PageProps {
     pack: PackDetails,
-    screenshots: string[]
+    screenshots: string[],
+    versionAvailability: VersionAvailability
+}
+
+interface VersionAvailability {
+    "java-1.8": boolean
+    "java-1.18": boolean
+    "bedrock": boolean
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-    const folderName = context.query.name
-    const packDetails = await fetch(`https://packs-resources.myra.bot/${folderName}/pack.json`)
-        .then(res => res.json())
-        .then(json => ({...json, folderName: folderName} as PackDetails));
-    const packScreenshots = await fetch(`https://packs-resources.myra.bot/${packDetails.folderName}/screenshots`)
+    const packFolderName = context.query.name
+
+    const packDetails = await readFile(`${packFolderName}/pack.json`)
+        .then(string => JSON.parse(string))
+        .then(json => ({...json, folderName: packFolderName} as PackDetails))
+
+    const packScreenshots = await fetch(`https://packs-resources.myra.bot/${packDetails.folderName}/screenshots/`)
         .then(res => res.json())
         .then(json => json as ResourceFileDescription[])
         .then(files => files.map(file => {
             return `https://packs-resources.myra.bot/${packDetails.folderName}/screenshots/${file.name}`
         }))
+
+    const downloadFolders = await listFolderFiles(`${packFolderName}/downloads`)
+    const versionAvailability: VersionAvailability = {
+        "java-1.8": false,
+        "java-1.18": false,
+        "bedrock": false
+    } as VersionAvailability
+    for (const versionFolderName of downloadFolders) { // Folder matches version name
+        versionAvailability[versionFolderName as keyof VersionAvailability] = true
+    }
+
     return {
         props: {
             pack: packDetails,
-            screenshots: packScreenshots
+            screenshots: packScreenshots,
+            versionAvailability: versionAvailability
         },
     };
 }
 
-export default function Page({pack, screenshots}: PageProps) {
+export default function Page({pack, screenshots, versionAvailability}: PageProps) {
+    const downloadUrl = `/api/download?pack=${pack.folderName}`
+
     return (
         <Wrapper>
             <Container>
@@ -37,14 +61,19 @@ export default function Page({pack, screenshots}: PageProps) {
                     <p>{pack.downloads} Downloads - 16x</p>
                 </div>
 
-                <ImageCarousel width="750px" images={screenshots}/>
+                <ImageCarouselWrapper>
+                    <ImageCarousel images={screenshots}/>
+                </ImageCarouselWrapper>
 
                 <DownloadContainer>
                     <h3>Downloads</h3>
-                    <ButtonsContainer>
-                        <DownloadButton>Java 1.8</DownloadButton>
-                        <DownloadButton>Java 1.18+</DownloadButton>
-                        <DownloadButton>Bedrock</DownloadButton>
+                    <ButtonsContainer>/
+                        {versionAvailability["java-1.8"] &&
+                            <DownloadButton href={`${downloadUrl}&version=java-1.8`}>Java 1.8</DownloadButton>}
+                        {versionAvailability["java-1.18"] &&
+                            <DownloadButton href={`${downloadUrl}&version=java-1.18`}>Java 1.18+</DownloadButton>}
+                        {versionAvailability["bedrock"] &&
+                            <DownloadButton href={`${downloadUrl}&version=bedrock`}>Bedrock</DownloadButton>}
                     </ButtonsContainer>
                 </DownloadContainer>
             </Container>
@@ -63,6 +92,11 @@ const Container = styled.div`
   flex-direction: column;
   gap: 1rem;
 `
+
+const ImageCarouselWrapper = styled.div`
+  width: 100vw;
+  max-width: 1000px;
+`
 const DownloadContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -74,10 +108,13 @@ const ButtonsContainer = styled.div`
   gap: .2rem;
 `
 
-const DownloadButton = styled.button`
+const DownloadButton = styled.a`
   padding: 0.8rem 1rem;
 
   font-size: 1rem;
+  color: var(--primary-1);
+  background-color: var(--secondary-1);
+
   border: none;
   border-radius: var(--border-radius);
 `
