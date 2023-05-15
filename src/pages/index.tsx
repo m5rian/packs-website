@@ -4,19 +4,17 @@ import {TexturePackCard} from "@/components/TexturePackCard";
 import SearchFiltering from "@/components/SearchFiltering";
 import {PackDetails} from "@/types/TexturePack";
 import {useState} from "react";
+import {listFolderFiles, readFile} from "@/utils";
 
 interface PageProps {
     packs: PackDetails[]
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-    const packs = await fetch("https://packs-resources.myra.bot/")
-        .then(res => res.json())
-        .then(json => json as Record<string, any>[])
-        .then(array => array.map(item => item.name))
+    const packs = await listFolderFiles("/")
     const packDetailsPromises = packs.map(name => {
-        return fetch(`https://packs-resources.myra.bot/${name}/pack.json`)
-            .then(res => res.json())
+        return readFile(`${name}/pack.json`)
+            .then(res => JSON.parse(res))
             .then(json => ({...json, folderName: name} as PackDetails));
     })
     const packDetails = await Promise.all(packDetailsPromises)
@@ -57,7 +55,7 @@ export default function Home(props: PageProps) {
     return (
         <Container>
             <h1>Texture Packs</h1>
-            <SearchFiltering handleSortBy={setSortType} updateSearchQuery={setSearchQuery} />
+            <SearchFiltering handleSortBy={setSortType} updateSearchQuery={setSearchQuery}/>
             <TexturePacksContainer>
                 {getSortedPacks().map((pack, index) => (
                     <TexturePackCard pack={pack} key={index}/>

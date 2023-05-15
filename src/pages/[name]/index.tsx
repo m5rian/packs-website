@@ -24,11 +24,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         .then(string => JSON.parse(string))
         .then(json => ({...json, folderName: packFolderName} as PackDetails))
 
-    const packScreenshots = await fetch(`https://packs-resources.myra.bot/${packDetails.folderName}/screenshots/`)
+    const packScreenshots = await fetch(`https://packs-resources.myra.bot/${packDetails.folderName}/images/screenshots/`)
         .then(res => res.json())
         .then(json => json as ResourceFileDescription[])
         .then(files => files.map(file => {
-            return `https://packs-resources.myra.bot/${packDetails.folderName}/screenshots/${file.name}`
+            return `https://packs-resources.myra.bot/${packDetails.folderName}/images/screenshots/${file.name}`
         }))
 
     const downloadFolders = await listFolderFiles(`${packFolderName}/downloads`)

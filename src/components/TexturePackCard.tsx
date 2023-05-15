@@ -10,7 +10,7 @@ type TexturePackCardProps = {
 export function TexturePackCard({pack}: TexturePackCardProps) {
     return (
         <PackContainer href={`/${pack.folderName}`}>
-            <ThumbnailImage src={`https://packs-resources.myra.bot/${pack.folderName}/thumbnail.jpg`}/>
+            <ThumbnailImage src={`https://packs-resources.myra.bot/${pack.folderName}/images/thumbnail.jpg`}/>
             <PackInfoContainer>
                 <Info>
                     <MdDownload/>{pack.downloads}
