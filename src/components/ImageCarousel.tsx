@@ -3,11 +3,10 @@ import {HiChevronLeft, HiChevronRight} from "react-icons/hi";
 import {useState} from "react";
 
 interface ComponentProps {
-    width: string
     images: string[]
 }
 
-export default function ImageCarousel({width, images}: ComponentProps) {
+export default function ImageCarousel({images}: ComponentProps) {
     let [counter, setCount] = useState(0)
 
     function decreaseCount() {
@@ -31,7 +30,7 @@ export default function ImageCarousel({width, images}: ComponentProps) {
                     <HiChevronLeft/>
                 </NavigationButton>
             )}
-            <ImagesWrapper width={width}>
+            <ImagesWrapper>
                 <ImagesContainer>
                     {images.map((imageUrl, index) => <Image
                         key={index}
@@ -75,8 +74,7 @@ const DisabledNavigationButton = styled(NavigationButton)`
   color: var(--secondary-4);
 `
 
-const ImagesWrapper = styled.div<{ width: string }>`
-  width: ${props => props.width};
+const ImagesWrapper = styled.div`
   overflow-x: hidden;
 `
 
