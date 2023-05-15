@@ -4,4 +4,10 @@ export interface PackDetails {
     downloads: number,
     videoId: string,
     releaseDate: number
+    authors: Author[]
+}
+
+export interface Author {
+    name: string,
+    avatar: string
 }

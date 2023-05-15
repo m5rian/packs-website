@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 import ImageCarousel from "@/components/ImageCarousel";
 import {ResourceFileDescription} from "@/types/ResourceFileDescription";
 import {listFolderFiles, readFile} from "@/utils";
+import {UserLink} from "@/components/UserLink";
 
 interface PageProps {
     pack: PackDetails,
@@ -65,9 +66,9 @@ export default function Page({pack, screenshots, versionAvailability}: PageProps
                     <ImageCarousel images={screenshots}/>
                 </ImageCarouselWrapper>
 
-                <DownloadContainer>
+                <Section>
                     <h3>Downloads</h3>
-                    <ButtonsContainer>/
+                    <ButtonsContainer>
                         {versionAvailability["java-1.8"] &&
                             <DownloadButton href={`${downloadUrl}&version=java-1.8`}>Java 1.8</DownloadButton>}
                         {versionAvailability["java-1.18"] &&
@@ -75,7 +76,15 @@ export default function Page({pack, screenshots, versionAvailability}: PageProps
                         {versionAvailability["bedrock"] &&
                             <DownloadButton href={`${downloadUrl}&version=bedrock`}>Bedrock</DownloadButton>}
                     </ButtonsContainer>
-                </DownloadContainer>
+                </Section>
+
+                {pack.authors !== undefined && pack.authors.length != 0 && (
+                    <Section>
+                        <h3>Collaboration with</h3>
+                        {pack.authors.map(author => <UserLink text={author.name} img={author.avatar}/>)}
+                    </Section>
+                )}
+
             </Container>
         </Wrapper>
     )
@@ -97,7 +106,7 @@ const ImageCarouselWrapper = styled.div`
   width: 100vw;
   max-width: 1000px;
 `
-const DownloadContainer = styled.div`
+const Section = styled.div`
   display: flex;
   flex-direction: column;
   gap: .5rem;
