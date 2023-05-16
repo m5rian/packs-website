@@ -80,6 +80,7 @@ const ImagesWrapper = styled.div`
 
 const ImagesContainer = styled.div`
   display: flex;
+  align-items: center;
 `
 
 const Image = styled.img`
