@@ -47,6 +47,7 @@ h1 {
     font-size: 7rem;
     font-weight: 800;
     color: var(--secondary-1);
+    text-align: center;
 }
 h2 {
     font-size: 5rem;
