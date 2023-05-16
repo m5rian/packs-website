@@ -106,6 +106,9 @@ const Wrapper = styled.div`
 `
 
 const Container = styled.div`
+  max-width: 100%;
+  padding: 1rem;
+  
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -113,7 +116,7 @@ const Container = styled.div`
 
 
 const ImageCarouselWrapper = styled.div`
-  width: 100vw;
+  width: 100%;
   max-width: 1000px;
 `
 
