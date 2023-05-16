@@ -61,3 +61,11 @@ h3 {
 p {
     color: var(--secondary-2);
 }
+@media (max-width: 500px) {
+    h1 {
+        font-size: 5rem;
+    }
+    h2 {
+        font-size: 3rem;
+    }
+}
