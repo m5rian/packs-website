@@ -46,7 +46,7 @@ export default function Home(props: PageProps) {
                 sortedPacks.sort((a, b) => a.releaseDate - b.releaseDate)
                 break
             case "downloads":
-                sortedPacks.sort((a, b) => a.downloads - b.downloads)
+                sortedPacks.sort((a, b) => b.downloads - a.downloads)
                 break
         }
         return sortedPacks.filter(pack => pack.name.toLowerCase().includes(searchQuery.toLowerCase()))
