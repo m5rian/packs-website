@@ -32,6 +32,10 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         .then(files => files.map(file => {
             return `https://packs-resources.myra.bot/${packDetails.folderName}/images/screenshots/${file.name}`
         }))
+        .then(screenshots => {
+            const thumbnail = `https://packs-resources.myra.bot/${packDetails.folderName}/images/thumbnail.jpg`
+            return [thumbnail, ...screenshots]
+        })
 
     const downloadFolders = await listFolderFiles(`${packFolderName}/downloads`)
     const versionAvailability: VersionAvailability = {
