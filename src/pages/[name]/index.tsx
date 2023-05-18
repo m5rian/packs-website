@@ -6,6 +6,11 @@ import {ResourceFileDescription} from "@/types/ResourceFileDescription";
 import {listFolderFiles, readFile} from "@/utils";
 import {UserLink} from "@/components/UserLink";
 import {MdDownload} from "react-icons/md";
+import {BiLink} from "react-icons/bi";
+import {FaYoutube} from "react-icons/fa"
+import {SocialsLink} from "@/components/SocialsLink";
+import React, {useState} from "react";
+import {keyframes} from "@emotion/react";
 
 interface PageProps {
     pack: PackDetails,
@@ -57,47 +62,114 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 export default function Page({pack, screenshots, versionAvailability}: PageProps) {
+    const [showCopyPopup, setShowCopyPopup] = useState(false)
+
+    function share() {
+        if (navigator.share) {
+            navigator.share({
+                title: pack.name,
+                url: window.location.host + "/" + pack.folderName
+            }).catch(console.error);
+        } else {
+            navigator.clipboard.writeText(location.href).then(_ => {
+                setShowCopyPopup(true)
+                setTimeout(() => {
+                    setShowCopyPopup(false)
+                }, 2500)
+            });
+        }
+    }
+
     const downloadUrl = `/api/download?pack=${pack.folderName}`
 
     return (
-        <Wrapper>
-            <Container>
-                <h2>{pack.name}</h2>
+        <>
+            {showCopyPopup
+                ? <PopupContainerActive>
+                    <p>Successfully copied link!</p>
+                </PopupContainerActive>
+                : <PopupContainer>
+                    <p>Successfully copied link!</p>
+                </PopupContainer>
+            }
 
-                <ImageCarouselWrapper>
-                    <ImageCarousel images={screenshots}/>
-                </ImageCarouselWrapper>
+            <Wrapper>
+                <Container>
+                    <h2>{pack.name}</h2>
 
-                <Section>
-                    <SectionHeaderContainer>
-                        <h3>Downloads</h3>
-                        <DownloadCount><MdDownload/> {pack.downloads}</DownloadCount>
-                    </SectionHeaderContainer>
                     <SectionContentContainer>
-                        {versionAvailability["java-1.8"] &&
-                            <DownloadButton href={`${downloadUrl}&version=java-1.8`}>Java 1.8</DownloadButton>}
-                        {versionAvailability["java-1.18"] &&
-                            <DownloadButton href={`${downloadUrl}&version=java-1.18`}>Java 1.18+</DownloadButton>}
-                        {versionAvailability["bedrock"] &&
-                            <DownloadButton href={`${downloadUrl}&version=bedrock`}>Bedrock</DownloadButton>}
+                        <SocialsLink callback={share}>
+                            <BiLink/>
+                        </SocialsLink>
+                        <SocialsLink url={"https://www.youtube.com/watch?v=" + pack.videoId}>
+                            <FaYoutube/>
+                        </SocialsLink>
                     </SectionContentContainer>
-                </Section>
 
-                {pack.authors !== undefined && pack.authors.length != 0 && (
+                    <ImageCarouselWrapper>
+                        <ImageCarousel images={screenshots}/>
+                    </ImageCarouselWrapper>
+
                     <Section>
-                        <h3>Collaboration with</h3>
+                        <SectionHeaderContainer>
+                            <h3>Downloads</h3>
+                            <DownloadCount><MdDownload/> {pack.downloads}</DownloadCount>
+                        </SectionHeaderContainer>
                         <SectionContentContainer>
-                            {pack.authors.map((author, i) => (
-                                <UserLink key={i} text={author.name} img={author.avatar}/>
-                            ))}
+                            {versionAvailability["java-1.8"] &&
+                                <DownloadButton href={`${downloadUrl}&version=java-1.8`}>Java 1.8</DownloadButton>}
+                            {versionAvailability["java-1.18"] &&
+                                <DownloadButton href={`${downloadUrl}&version=java-1.18`}>Java 1.18+</DownloadButton>}
+                            {versionAvailability["bedrock"] &&
+                                <DownloadButton href={`${downloadUrl}&version=bedrock`}>Bedrock</DownloadButton>}
                         </SectionContentContainer>
                     </Section>
-                )}
 
-            </Container>
-        </Wrapper>
+                    {pack.authors !== undefined && pack.authors.length != 0 && (
+                        <Section>
+                            <h3>Collaboration with</h3>
+                            <SectionContentContainer>
+                                {pack.authors.map((author, i) => (
+                                    <UserLink key={i} text={author.name} img={author.avatar}/>
+                                ))}
+                            </SectionContentContainer>
+                        </Section>
+                    )}
+
+                </Container>
+            </Wrapper>
+        </>
     )
 }
+
+const PopupContainer = styled.div`
+  position: fixed;
+  right: 0;
+  padding: 1.5rem;
+  border: var(--border);
+  border-radius: var(--border-radius);
+  background-color: var(--primary-2);
+  transform: translateY(-100%);
+`
+
+const animation = keyframes`
+  0% {
+    transform: translateY(-100%);
+  }
+  25% {
+    transform: translateY(0);
+  }
+  75% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+`
+
+const PopupContainerActive = styled(PopupContainer)`
+  animation: ${animation} 2.5s ease;
+`
 
 const Wrapper = styled.div`
   width: 100%;
@@ -108,7 +180,7 @@ const Wrapper = styled.div`
 const Container = styled.div`
   max-width: 100%;
   padding: 1rem;
-  
+
   display: flex;
   flex-direction: column;
   gap: 1rem;
