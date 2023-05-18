@@ -1,4 +1,4 @@
-import {PackDetails} from "@/types/TexturePack";
+import {PackDetails, TagInfo} from "@/types/TexturePack";
 import {GetServerSidePropsContext} from "next";
 import styled from "@emotion/styled";
 import ImageCarousel from "@/components/ImageCarousel";
@@ -11,11 +11,15 @@ import {FaYoutube} from "react-icons/fa"
 import {SocialsLink} from "@/components/SocialsLink";
 import React, {useState} from "react";
 import {keyframes} from "@emotion/react";
+import Tag from "@/components/Tag"
 
 interface PageProps {
+    packName: string,
     pack: PackDetails,
     screenshots: string[],
-    versionAvailability: VersionAvailability
+    versionAvailability: VersionAvailability,
+    variants: PackDetails[]
+    tags: TagInfo[]
 }
 
 interface VersionAvailability {
@@ -27,11 +31,33 @@ interface VersionAvailability {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
     const packFolderName = context.query.name
 
-    const packDetails = await readFile(`${packFolderName}/pack.json`)
+    let packDetails = await readFile(`${packFolderName}/pack.json`)
         .then(string => JSON.parse(string))
         .then(json => ({...json, folderName: packFolderName} as PackDetails))
+    const packName = packDetails.name
 
-    const packScreenshots = await fetch(`https://packs-resources.myra.bot/${packDetails.folderName}/images/screenshots/`)
+    const isPackBundle = packDetails.type === 1
+    let packVariant = context.query.variant
+
+    if (isPackBundle && packVariant === undefined) {
+        return {
+            redirect: {
+                destination: `${packFolderName}/?variant=default`,
+                permanent: false,
+            }
+        }
+    }
+
+    if (isPackBundle) {
+        packDetails = await readFile(`${packFolderName}/packs/${packVariant}/pack.json`)
+            .then(string => JSON.parse(string))
+            .then(json => ({...json, folderName: packFolderName} as PackDetails))
+    }
+
+    const screenshotsUrl = isPackBundle
+        ? `https://packs-resources.myra.bot/${packDetails.folderName}/packs/${packVariant}/screenshots/`
+        : `https://packs-resources.myra.bot/${packDetails.folderName}/images/screenshots/`
+    const screenshots = await fetch(screenshotsUrl)
         .then(res => res.json())
         .then(json => json as ResourceFileDescription[])
         .then(files => files.map(file => {
@@ -42,7 +68,10 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
             return [thumbnail, ...screenshots]
         })
 
-    const downloadFolders = await listFolderFiles(`${packFolderName}/downloads`)
+    let downloadFolderUrl = isPackBundle
+        ? `${packDetails.folderName}/packs/${packVariant}/downloads/`
+        : `${packFolderName}/downloads`
+    const downloadFolders = await listFolderFiles(downloadFolderUrl)
     const versionAvailability: VersionAvailability = {
         "java-1.8": false,
         "java-1.18": false,
@@ -52,16 +81,37 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         versionAvailability[versionFolderName as keyof VersionAvailability] = true
     }
 
+    let variants: PackDetails[] = []
+    if (isPackBundle) {
+        const variantNames = await listFolderFiles(`${packFolderName}/packs`)
+        for (let variantName of variantNames) {
+            const variantDetails = await readFile(`${packFolderName}/packs/${variantName}/pack.json`)
+                .then(res => JSON.parse(res))
+                .then(res => res as PackDetails)
+            variantDetails.data.variantName = variantName
+            variants.push(variantDetails)
+        }
+    }
+
+    const tags: TagInfo[] = []
+    if (isPackBundle) tags.push({
+        title: packDetails.name,
+        colour: packDetails.data.colour
+    })
+
     return {
         props: {
+            packName: packName,
             pack: packDetails,
-            screenshots: packScreenshots,
-            versionAvailability: versionAvailability
+            screenshots: screenshots,
+            versionAvailability: versionAvailability,
+            variants: variants,
+            tags: tags
         },
     };
 }
 
-export default function Page({pack, screenshots, versionAvailability}: PageProps) {
+export default function Page({packName, pack, screenshots, versionAvailability, variants, tags}: PageProps) {
     const [showCopyPopup, setShowCopyPopup] = useState(false)
 
     function share() {
@@ -80,7 +130,7 @@ export default function Page({pack, screenshots, versionAvailability}: PageProps
         }
     }
 
-    const downloadUrl = `/api/download?pack=${pack.folderName}`
+    let downloadUrl = `/api/download?pack=${pack.folderName}`
 
     return (
         <>
@@ -95,7 +145,10 @@ export default function Page({pack, screenshots, versionAvailability}: PageProps
 
             <Wrapper>
                 <Container>
-                    <h2>{pack.name}</h2>
+                    <h2>{packName}</h2>
+                    <TagContainer>
+                        {tags.map((tag, i) => <Tag tag={tag} key={i}/>)}
+                    </TagContainer>
 
                     <SectionContentContainer>
                         <SocialsLink callback={share}>
@@ -109,6 +162,17 @@ export default function Page({pack, screenshots, versionAvailability}: PageProps
                     <ImageCarouselWrapper>
                         <ImageCarousel images={screenshots}/>
                     </ImageCarouselWrapper>
+
+                    {variants.length !== 0 && <Section>
+                        <h3>Variants</h3>
+                        <SectionContentContainer>
+                            {variants.map((variant, i) => <VariantButton
+                                href={`?variant=${variant.data.variantName}`}
+                                key={i}
+                                colour={variant.data.colour}
+                            />)}
+                        </SectionContentContainer>
+                    </Section>}
 
                     <Section>
                         <SectionHeaderContainer>
@@ -232,4 +296,17 @@ const DownloadButton = styled.a`
 
   border: none;
   border-radius: var(--border-radius);
+`
+
+const VariantButton = styled.a<{ colour: string }>`
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: var(--border);
+  background-color: ${props => props.colour};
+`
+
+const TagContainer = styled.div`
+  display: flex;
+  gap: 1rem;
 `
