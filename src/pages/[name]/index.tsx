@@ -8,10 +8,10 @@ import {UserLink} from "@/components/UserLink";
 import {MdDownload} from "react-icons/md";
 import {BiLink} from "react-icons/bi";
 import {FaYoutube} from "react-icons/fa"
-import {SocialsLink} from "@/components/SocialsLink";
 import React, {useState} from "react";
-import {keyframes} from "@emotion/react";
 import Tag from "@/components/Tag"
+import Toast from "@/components/Toast";
+import SocialLink from "@/components/SocialLink";
 
 interface PageProps {
     packName: string,
@@ -57,6 +57,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     const screenshotsUrl = isPackBundle
         ? `https://packs-resources.myra.bot/${packDetails.folderName}/packs/${packVariant}/screenshots/`
         : `https://packs-resources.myra.bot/${packDetails.folderName}/images/screenshots/`
+    console.log(screenshotsUrl)
     const screenshots = await fetch(screenshotsUrl)
         .then(res => res.json())
         .then(json => json as ResourceFileDescription[])
@@ -134,14 +135,7 @@ export default function Page({packName, pack, screenshots, versionAvailability, 
 
     return (
         <>
-            {showCopyPopup
-                ? <PopupContainerActive>
-                    <p>Successfully copied link!</p>
-                </PopupContainerActive>
-                : <PopupContainer>
-                    <p>Successfully copied link!</p>
-                </PopupContainer>
-            }
+            <Toast condition={showCopyPopup} content={"Successfully copied link!"}/>
 
             <Wrapper>
                 <Container>
@@ -151,12 +145,12 @@ export default function Page({packName, pack, screenshots, versionAvailability, 
                     </TagContainer>
 
                     <SectionContentContainer>
-                        <SocialsLink callback={share}>
+                        <SocialLink callback={share}>
                             <BiLink/>
-                        </SocialsLink>
-                        <SocialsLink url={"https://www.youtube.com/watch?v=" + pack.videoId}>
+                        </SocialLink>
+                        <SocialLink url={"https://www.youtube.com/watch?v=" + pack.videoId}>
                             <FaYoutube/>
-                        </SocialsLink>
+                        </SocialLink>
                     </SectionContentContainer>
 
                     <ImageCarouselWrapper>
@@ -205,36 +199,6 @@ export default function Page({packName, pack, screenshots, versionAvailability, 
         </>
     )
 }
-
-const PopupContainer = styled.div`
-  position: fixed;
-  right: 0;
-  padding: 1.5rem;
-  border: var(--border);
-  border-radius: var(--border-radius);
-  background-color: var(--primary-2);
-  transform: translateY(-100%);
-`
-
-const animation = keyframes`
-  0% {
-    transform: translateY(-100%);
-  }
-  25% {
-    transform: translateY(0);
-  }
-  75% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-100%);
-  }
-`
-
-const PopupContainerActive = styled(PopupContainer)`
-  animation: ${animation} 2.5s ease;
-`
-
 const Wrapper = styled.div`
   width: 100%;
   display: flex;
