@@ -11,6 +11,7 @@ export interface PackDetails {
      */
     type: number,
     data: Record<string, any>
+    tags: TagInfo[]
 }
 
 export interface Author {

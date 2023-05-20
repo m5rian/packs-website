@@ -1,4 +1,4 @@
-import {PackDetails, TagInfo} from "@/types/TexturePack";
+import {PackDetails} from "@/types/TexturePack";
 import {GetServerSidePropsContext} from "next";
 import styled from "@emotion/styled";
 import ImageCarousel from "@/components/ImageCarousel";
@@ -14,12 +14,11 @@ import Toast from "@/components/Toast";
 import SocialLink from "@/components/SocialLink";
 
 interface PageProps {
-    packName: string,
+    packBundle: PackDetails,
     pack: PackDetails,
     screenshots: string[],
     versionAvailability: VersionAvailability,
     variants: PackDetails[]
-    tags: TagInfo[]
 }
 
 interface VersionAvailability {
@@ -28,51 +27,21 @@ interface VersionAvailability {
     "bedrock": boolean
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-    const packFolderName = context.query.name
-
-    let packDetails = await readFile(`${packFolderName}/pack.json`)
-        .then(string => JSON.parse(string))
-        .then(json => ({...json, folderName: packFolderName} as PackDetails))
-    const packName = packDetails.name
-
-    const isPackBundle = packDetails.type === 1
-    let packVariant = context.query.variant
-
-    if (isPackBundle && packVariant === undefined) {
-        return {
-            redirect: {
-                destination: `${packFolderName}/?variant=default`,
-                permanent: false,
-            }
-        }
-    }
-
-    if (isPackBundle) {
-        packDetails = await readFile(`${packFolderName}/packs/${packVariant}/pack.json`)
-            .then(string => JSON.parse(string))
-            .then(json => ({...json, folderName: packFolderName} as PackDetails))
-    }
-
-    const screenshotsUrl = isPackBundle
-        ? `https://packs-resources.myra.bot/${packDetails.folderName}/packs/${packVariant}/screenshots/`
-        : `https://packs-resources.myra.bot/${packDetails.folderName}/images/screenshots/`
-    console.log(screenshotsUrl)
-    const screenshots = await fetch(screenshotsUrl)
+async function getScreenshots(imageFolderUrl: string, screenshotsFolderUrl: string) {
+    return await fetch(screenshotsFolderUrl)
         .then(res => res.json())
         .then(json => json as ResourceFileDescription[])
         .then(files => files.map(file => {
-            return `https://packs-resources.myra.bot/${packDetails.folderName}/images/screenshots/${file.name}`
+            return `${screenshotsFolderUrl}${file.name}`
         }))
         .then(screenshots => {
-            const thumbnail = `https://packs-resources.myra.bot/${packDetails.folderName}/images/thumbnail.jpg`
+            const thumbnail = `${imageFolderUrl}thumbnail.jpg`
             return [thumbnail, ...screenshots]
         })
+}
 
-    let downloadFolderUrl = isPackBundle
-        ? `${packDetails.folderName}/packs/${packVariant}/downloads/`
-        : `${packFolderName}/downloads`
-    const downloadFolders = await listFolderFiles(downloadFolderUrl)
+async function getVersionAvailability(downloadFolderPath: string) {
+    const downloadFolders = await listFolderFiles(downloadFolderPath)
     const versionAvailability: VersionAvailability = {
         "java-1.8": false,
         "java-1.18": false,
@@ -81,9 +50,38 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     for (const versionFolderName of downloadFolders) { // Folder matches version name
         versionAvailability[versionFolderName as keyof VersionAvailability] = true
     }
+    return versionAvailability
+}
 
-    let variants: PackDetails[] = []
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+    const packFolderName = context.query.name
+
+    let rootPackDetails = await readFile(`${packFolderName}/pack.json`)
+        .then(string => JSON.parse(string))
+        .then(json => ({...json, folderName: packFolderName} as PackDetails))
+    const isPackBundle = rootPackDetails.type === 1
+
     if (isPackBundle) {
+        let packVariant = context.query.variant
+        if (packVariant === undefined) return {
+            redirect: {
+                destination: `${packFolderName}/?variant=default`,
+                permanent: false,
+            }
+        }
+
+        let packDetails = await readFile(`${packFolderName}/packs/${packVariant}/pack.json`)
+            .then(string => JSON.parse(string))
+            .then(json => ({...json, folderName: packFolderName} as PackDetails))
+
+        const imageFolderUrl = `https://packs-resources.myra.bot/${rootPackDetails.folderName}/images/`
+        const screenshotFolderUrl = `https://packs-resources.myra.bot/${rootPackDetails.folderName}/packs/${packVariant}/screenshots/`
+        const screenshots = await getScreenshots(imageFolderUrl, screenshotFolderUrl)
+
+        let downloadFolderPath = `${rootPackDetails.folderName}/packs/${packVariant}/downloads/`
+        const versionAvailability = await getVersionAvailability(downloadFolderPath)
+
+        const variants: PackDetails[] = []
         const variantNames = await listFolderFiles(`${packFolderName}/packs`)
         for (let variantName of variantNames) {
             const variantDetails = await readFile(`${packFolderName}/packs/${variantName}/pack.json`)
@@ -92,27 +90,37 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
             variantDetails.data.variantName = variantName
             variants.push(variantDetails)
         }
+
+        return {
+            props: {
+                packBundle: rootPackDetails,
+                pack: packDetails,
+                screenshots: screenshots,
+                versionAvailability: versionAvailability,
+                variants: variants,
+            },
+        };
     }
 
-    const tags: TagInfo[] = []
-    if (isPackBundle) tags.push({
-        title: packDetails.name,
-        colour: packDetails.data.colour
-    })
+    const imageFolderUrl = `https://packs-resources.myra.bot/${rootPackDetails.folderName}/images/`
+    const screenshotFolderUrl = `https://packs-resources.myra.bot/${rootPackDetails.folderName}/images/screenshots/`
+    const screenshots = await getScreenshots(imageFolderUrl, screenshotFolderUrl)
+
+    const downloadFolderPath = `${packFolderName}/downloads`
+    const versionAvailability = getVersionAvailability(downloadFolderPath)
 
     return {
         props: {
-            packName: packName,
-            pack: packDetails,
+            packBundle: null,
+            pack: rootPackDetails,
             screenshots: screenshots,
             versionAvailability: versionAvailability,
-            variants: variants,
-            tags: tags
+            variants: [],
         },
     };
 }
 
-export default function Page({packName, pack, screenshots, versionAvailability, variants, tags}: PageProps) {
+export default function Page({packBundle, pack, screenshots, versionAvailability, variants}: PageProps) {
     const [showCopyPopup, setShowCopyPopup] = useState(false)
 
     function share() {
@@ -132,16 +140,15 @@ export default function Page({packName, pack, screenshots, versionAvailability, 
     }
 
     let downloadUrl = `/api/download?pack=${pack.folderName}`
-
     return (
         <>
             <Toast condition={showCopyPopup} content={"Successfully copied link!"}/>
 
             <Wrapper>
                 <Container>
-                    <h2>{packName}</h2>
+                    <h2>{packBundle?.name || pack.name}</h2>
                     <TagContainer>
-                        {tags.map((tag, i) => <Tag tag={tag} key={i}/>)}
+                        {(packBundle?.tags || pack.tags)?.map((tag, i) => <Tag tag={tag} key={i}/>)}
                     </TagContainer>
 
                     <SectionContentContainer>
@@ -183,11 +190,11 @@ export default function Page({packName, pack, screenshots, versionAvailability, 
                         </SectionContentContainer>
                     </Section>
 
-                    {pack.authors !== undefined && pack.authors.length != 0 && (
+                    {(packBundle?.authors || pack.authors) !== undefined && (packBundle?.authors || pack.authors).length != 0 && (
                         <Section>
                             <h3>Collaboration with</h3>
                             <SectionContentContainer>
-                                {pack.authors.map((author, i) => (
+                                {(packBundle?.authors || pack.authors).map((author, i) => (
                                     <UserLink key={i} text={author.name} img={author.avatar}/>
                                 ))}
                             </SectionContentContainer>
