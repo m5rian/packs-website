@@ -90,9 +90,14 @@ const FilterContainer = styled.div`
   width: 80%;
   display: flex;
   justify-content: space-between;
+  gap: 1rem;
 `
 
 const SearchInput = styled.input`
+  width: inherit;
+  max-width: 250px;
+  height: 40px;
+  
   color: var(--secondary-2);
   background-color: var(--primary-2);
 
