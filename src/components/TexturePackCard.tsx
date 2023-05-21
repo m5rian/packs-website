@@ -10,14 +10,16 @@ type TexturePackCardProps = {
 export function TexturePackCard({pack}: TexturePackCardProps) {
     return (
         <PackContainer href={`/${pack.folderName}`}>
-            <ThumbnailImage loading={"lazy"} src={`https://packs-resources.myra.bot/${pack.folderName}/images/thumbnail.jpg`}/>
+            <ThumbnailImage loading={"lazy"}
+                            src={`https://packs-resources.myra.bot/${pack.folderName}/images/thumbnail.jpg`}/>
             <PackInfoContainer>
-                <Info>
-                    <MdDownload/>{pack.downloads}
-                </Info>
+                <Info><MdDownload/>{pack.downloads}</Info>
                 <Info>
                     <BsFillCalendarDateFill/>{new Date(pack.releaseDate * 1000).toLocaleDateString(undefined)}
                 </Info>
+                {pack.data !== undefined && "resolution" in pack.data &&
+                    <Info>{pack.data.resolution}x</Info>
+                }
             </PackInfoContainer>
         </PackContainer>
     )
@@ -44,7 +46,7 @@ const PackInfoContainer = styled.div`
 const Info = styled.p`
   font-size: .8rem;
   color: var(--secondary-3);
-  
+
   display: flex;
   align-items: center;
   justify-content: center;
