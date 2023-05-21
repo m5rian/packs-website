@@ -17,7 +17,7 @@ type AppPropsWithLayout = AppProps & {
 
 export default function MyApp({Component, pageProps}: AppPropsWithLayout) {
     return (
-        <main className={inter.className}>
+        <MainContainer className={inter.className}>
             <Component {...pageProps} />
             <Footer>
                 <HorizontalLayout>
@@ -33,9 +33,16 @@ export default function MyApp({Component, pageProps}: AppPropsWithLayout) {
                     <li><a href={"https://discord.gg/nG4uKuB"}>Discord</a></li>
                 </Section>
             </Footer>
-        </main>
+        </MainContainer>
     );
 }
+
+const MainContainer = styled.main`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`
 
 const Footer = styled.footer`
   margin-top: 5rem;
