@@ -15,7 +15,7 @@ interface Props {
     setFilters: (filters: Filters) => void
 }
 
-export default function SearchFiltering({packs, handleSortBy, updateSearchQuery, activeFilters, setFilters}: Props) {
+export default function Filtering({packs, handleSortBy, updateSearchQuery, activeFilters, setFilters}: Props) {
     return (
         <FilterContainer>
             <SearchInput onChange={event => updateSearchQuery(event.target.value)} type="text" placeholder="search"/>

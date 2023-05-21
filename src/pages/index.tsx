@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import {TexturePackCard} from "@/components/TexturePackCard";
-import SearchFiltering from "@/components/filtering/SearchFiltering";
+import Filtering from "@/components/filtering/Filtering";
 import {PackDetails} from "@/types/TexturePack";
 import {useState} from "react";
 import {listFolderFiles, readFile} from "@/utils";
@@ -78,11 +78,11 @@ export default function Home(props: PageProps) {
     return (
         <Container>
             <h1>Texture Packs</h1>
-            <SearchFiltering packs={packs}
-                             handleSortBy={setSortType}
-                             updateSearchQuery={setSearchQuery}
-                             activeFilters={filters}
-                             setFilters={setFilters}/>
+            <Filtering packs={packs}
+                       handleSortBy={setSortType}
+                       updateSearchQuery={setSearchQuery}
+                       activeFilters={filters}
+                       setFilters={setFilters}/>
             <TexturePacksContainer>
                 {filterPacks(getSortedPacks()).map((pack, index) => (
                     <TexturePackCard pack={pack} key={index}/>
