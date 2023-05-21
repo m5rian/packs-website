@@ -107,7 +107,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     const screenshots = await getScreenshots(imageFolderUrl, screenshotFolderUrl)
 
     const downloadFolderPath = `${packFolderName}/downloads`
-    const versionAvailability = getVersionAvailability(downloadFolderPath)
+    const versionAvailability = await getVersionAvailability(downloadFolderPath)
 
     return {
         props: {
