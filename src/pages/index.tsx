@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import {TexturePackCard} from "@/components/TexturePackCard";
-import SearchFiltering from "@/components/SearchFiltering";
+import SearchFiltering from "@/components/filtering/SearchFiltering";
 import {PackDetails} from "@/types/TexturePack";
 import {useState} from "react";
 import {listFolderFiles, readFile} from "@/utils";
