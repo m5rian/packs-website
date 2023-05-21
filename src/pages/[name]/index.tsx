@@ -139,7 +139,6 @@ export default function Page({packBundle, pack, screenshots, versionAvailability
         }
     }
 
-    console.log(pack)
     let downloadUrl = packBundle
         ? `/api/download?pack=${packBundle.folderName}&variant=${pack.folderName}`
         : `/api/download?pack=${pack.folderName}`
