@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import {GetStaticPropsContext} from "next";
 import {TexturePackCard} from "@/components/TexturePackCard";
 import SearchFiltering from "@/components/SearchFiltering";
 import {PackDetails} from "@/types/TexturePack";
@@ -8,6 +7,10 @@ import {listFolderFiles, readFile} from "@/utils";
 
 interface PageProps {
     packs: PackDetails[]
+}
+
+export interface Filters {
+    [key: string]: any;
 }
 
 export async function getStaticProps() {
@@ -27,11 +30,11 @@ export async function getStaticProps() {
 }
 
 export type SortType = "name" | "date-newest" | "date-oldest" | "downloads"
-
 export default function Home(props: PageProps) {
     const {packs} = props;
     const [sortType, setSortType] = useState<SortType>("date-newest")
     const [searchQuery, setSearchQuery] = useState("")
+    const [filters, setFilters] = useState<Filters>({})
 
     function getSortedPacks(): PackDetails[] {
         let sortedPacks = packs.slice() // Copy original array
@@ -52,12 +55,36 @@ export default function Home(props: PageProps) {
         return sortedPacks.filter(pack => pack.name.toLowerCase().includes(searchQuery.toLowerCase()))
     }
 
+    function filterPacks(packs: PackDetails[]) {
+        let filterProperties = Object.keys(filters)
+        for (const filterProperty of filterProperties) {
+            const enabledFilters = (filters as any)[filterProperty] as any[]
+            if (enabledFilters.length === 0) filterProperties = filterProperties.filter(property => {
+                return property !== filterProperty
+            })
+        }
+        // No filters applied
+        if (filterProperties.length === 0) return packs
+
+        return packs.filter(pack => {
+            const metadata = pack.data
+            return filterProperties.some(filterProperty => {
+                const filterValues = filters[filterProperty];
+                return filterValues.includes(metadata?.[filterProperty]);
+            })
+        })
+    }
+
     return (
         <Container>
             <h1>Texture Packs</h1>
-            <SearchFiltering handleSortBy={setSortType} updateSearchQuery={setSearchQuery}/>
+            <SearchFiltering packs={packs}
+                             handleSortBy={setSortType}
+                             updateSearchQuery={setSearchQuery}
+                             activeFilters={filters}
+                             setFilters={setFilters}/>
             <TexturePacksContainer>
-                {getSortedPacks().map((pack, index) => (
+                {filterPacks(getSortedPacks()).map((pack, index) => (
                     <TexturePackCard pack={pack} key={index}/>
                 ))}
             </TexturePacksContainer>

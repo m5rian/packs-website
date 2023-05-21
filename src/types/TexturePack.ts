@@ -21,5 +21,6 @@ export interface Author {
 
 export interface TagInfo {
     title: string
+    type: string
     colour: string | null
 }

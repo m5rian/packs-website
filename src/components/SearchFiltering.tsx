@@ -1,32 +1,90 @@
 import styled from "@emotion/styled";
 import {BiSortAlt2} from "react-icons/bi";
-import {SortType} from "@/pages";
+import {Filters, SortType} from "@/pages";
+import {HiFilter} from "react-icons/hi";
+import {PackDetails} from "@/types/TexturePack";
+import FilterCategory from "@/components/filtering/FilterCategory";
+import React from "react";
+import FilterOption from "@/components/filtering/FilterOption";
 
 interface Props {
+    packs: PackDetails[]
     handleSortBy: (sortType: SortType) => void,
-    updateSearchQuery: (query: string) => void
+    updateSearchQuery: (query: string) => void,
+    activeFilters: Record<string, any[]>,
+    setFilters: (filters: Filters) => void
 }
 
-export default function SearchFiltering({handleSortBy, updateSearchQuery}: Props) {
+export default function SearchFiltering({packs, handleSortBy, updateSearchQuery, activeFilters, setFilters}: Props) {
     return (
         <FilterContainer>
             <SearchInput onChange={event => updateSearchQuery(event.target.value)} type="text" placeholder="search"/>
-            <SortByButton>
-                <SortIconWrapper>
-                    <BiSortAlt2/>
-                </SortIconWrapper>
-                <p>Sort By</p>
 
-                <SortingOptionsContainer>
-                    <FilterOption onClick={() => handleSortBy("name")}>Name</FilterOption>
-                    <FilterOption onClick={() => handleSortBy("date-newest")}>Newest</FilterOption>
-                    <FilterOption onClick={() => handleSortBy("date-oldest")}>Oldest</FilterOption>
-                    <FilterOption onClick={() => handleSortBy("downloads")}>Popular</FilterOption>
-                </SortingOptionsContainer>
-            </SortByButton>
+            <FilteringContainer>
+                <Button>
+                    <IconWrapper>
+                        <HiFilter/>
+                    </IconWrapper>
+                    <p>Filter</p>
+
+                    <OptionsContainer>
+                        <FilterCategory packs={packs} prop={"resolution"} activeFilters={activeFilters}
+                                        setFilters={setFilters}/>
+                    </OptionsContainer>
+                </Button>
+                <Button>
+                    <IconWrapper>
+                        <BiSortAlt2/>
+                    </IconWrapper>
+                    <p>Sort By</p>
+
+                    <OptionsContainer>
+                        <FilterOption onClick={() => handleSortBy("name")}>Name</FilterOption>
+                        <FilterOption onClick={() => handleSortBy("date-newest")}>Newest</FilterOption>
+                        <FilterOption onClick={() => handleSortBy("date-oldest")}>Oldest</FilterOption>
+                        <FilterOption onClick={() => handleSortBy("downloads")}>Popular</FilterOption>
+                    </OptionsContainer>
+                </Button>
+            </FilteringContainer>
         </FilterContainer>
     )
 }
+
+const Button = styled.button`
+  position: relative;
+  background: none;
+  border: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+
+  &:focus-within > div {
+    display: flex;
+    flex-direction: column;
+  }
+`
+
+const OptionsContainer = styled.div`
+  position: absolute;
+  background-color: var(--primary-2);
+  top: 4rem;
+
+  display: none;
+  flex-direction: column;
+  align-items: start;
+  gap: .5rem;
+
+  border-radius: var(--border-radius);
+  border: var(--border);
+`
+
+const FilteringContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+`
 
 const FilterContainer = styled.div`
   width: 80%;
@@ -43,22 +101,7 @@ const SearchInput = styled.input`
   border-radius: var(--border-radius);
 `
 
-const SortByButton = styled.button`
-  position: relative;
-  background: none;
-  border: none;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: .5rem;
-
-  &:focus-within div {
-    display: flex;
-  }
-`
-
-const SortIconWrapper = styled.div`
+const IconWrapper = styled.div`
   color: var(--secondary-1);
   font-size: 1.5rem;
 
@@ -67,29 +110,4 @@ const SortIconWrapper = styled.div`
   border-radius: var(--border-radius);
 
   display: flex;
-`
-
-const SortingOptionsContainer = styled.div`
-  position: absolute;
-  background-color: var(--primary-2);
-  top: 4rem;
-
-  display: none;
-  flex-direction: column;
-  align-items: start;
-  gap: .5rem;
-
-  border-radius: var(--border-radius);
-  border: var(--border);
-`
-
-const FilterOption = styled.p`
-  width: 100%;
-  padding: .75rem 1rem;
-  text-align: start;
-  border-radius: var(--border-radius);
-
-  &:hover {
-    background-color: var(--primary-3);
-  }
 `
