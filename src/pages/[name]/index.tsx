@@ -72,7 +72,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
         let packDetails = await readFile(`${packFolderName}/packs/${packVariant}/pack.json`)
             .then(string => JSON.parse(string))
-            .then(json => ({...json, folderName: packFolderName} as PackDetails))
+            .then(json => ({...json, folderName: packVariant} as PackDetails))
 
         const imageFolderUrl = `https://packs-resources.myra.bot/${rootPackDetails.folderName}/images/`
         const screenshotFolderUrl = `https://packs-resources.myra.bot/${rootPackDetails.folderName}/packs/${packVariant}/screenshots/`
@@ -139,7 +139,10 @@ export default function Page({packBundle, pack, screenshots, versionAvailability
         }
     }
 
-    let downloadUrl = `/api/download?pack=${pack.folderName}`
+    console.log(pack)
+    let downloadUrl = packBundle
+        ? `/api/download?pack=${packBundle.folderName}&variant=${pack.folderName}`
+        : `/api/download?pack=${pack.folderName}`
     return (
         <>
             <Toast condition={showCopyPopup} content={"Successfully copied link!"}/>
