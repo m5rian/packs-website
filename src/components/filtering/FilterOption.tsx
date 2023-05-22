@@ -22,11 +22,11 @@ const Wrapper = styled.p<{ enabled: boolean }>`
   border-radius: var(--border-radius);
 
   &:hover {
-    background-color: var(--primary-3);
+    background-color: var(--primary-2);
   }
 
   ${prop => prop.enabled && css`
-    background-color: blue !important;
+    background-color: var(--primary-3) !important;
   `}
 }
 `

@@ -70,7 +70,7 @@ const Button = styled.button`
 
 const OptionsContainer = styled.div`
   position: absolute;
-  background-color: var(--primary-2);
+  background-color: var(--primary-1);
   top: 4rem;
 
   display: none;
