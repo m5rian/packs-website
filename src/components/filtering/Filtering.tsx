@@ -30,6 +30,8 @@ export default function Filtering({packs, handleSortBy, updateSearchQuery, activ
                     <OptionsContainer>
                         <FilterCategory packs={packs} prop={"resolution"} activeFilters={activeFilters}
                                         setFilters={setFilters}/>
+                        <FilterCategory packs={packs} prop={"version"} activeFilters={activeFilters}
+                                        setFilters={setFilters}/>
                     </OptionsContainer>
                 </Button>
                 <Button>
@@ -97,7 +99,7 @@ const SearchInput = styled.input`
   width: inherit;
   max-width: 250px;
   height: 40px;
-  
+
   color: var(--secondary-2);
   background-color: var(--primary-2);
 

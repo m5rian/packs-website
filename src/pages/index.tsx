@@ -68,9 +68,12 @@ export default function Home(props: PageProps) {
 
         return packs.filter(pack => {
             const metadata = pack.data
-            return filterProperties.some(filterProperty => {
+            return filterProperties.every(filterProperty => {
                 const filterValues = filters[filterProperty];
-                return filterValues.includes(metadata?.[filterProperty]);
+                const packValues = metadata?.[filterProperty]
+
+                if (packValues === undefined && filterValues.includes(undefined)) return true
+                else return packValues?.some(value => filterValues.includes(value))
             })
         })
     }

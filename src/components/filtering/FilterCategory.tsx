@@ -11,7 +11,7 @@ interface ComponentProps {
 }
 
 export default function FilterCategory({packs, prop, activeFilters, setFilters}: ComponentProps) {
-    const options = packs.map(pack => pack?.data?.[prop])
+    const options = packs.flatMap(pack => pack?.data?.[prop])
     const optionsSet = Array.from(new Set(options))
 
     function count(option: any) {
@@ -29,9 +29,10 @@ export default function FilterCategory({packs, prop, activeFilters, setFilters}:
         else updatedFilters[prop] = [...updatedFilters[prop], value]
 
         setFilters(updatedFilters)
+        console.log(updatedFilters)
     }
 
-    return <div>
+    return <div style={{width: "100%"}}>
         <Title>{prop}</Title>
         <OptionsContainer>
             {optionsSet.map((option, i) => {
@@ -49,6 +50,7 @@ export default function FilterCategory({packs, prop, activeFilters, setFilters}:
 
 const Title = styled.h4`
   padding: .5rem 1rem;
+  text-align: start;
 `
 const OptionsContainer = styled.div`
   display: flex;

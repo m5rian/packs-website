@@ -10,13 +10,17 @@ export interface PackDetails {
      * 1 Pack bundle
      */
     type: number,
-    data: Record<string, any>
+    data: Metadata
     tags: TagInfo[]
 }
 
 export interface Author {
     name: string,
     avatar: string
+}
+
+export interface Metadata {
+    [key: string]: any[] | undefined;
 }
 
 export interface TagInfo {
