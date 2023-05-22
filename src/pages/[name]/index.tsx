@@ -87,7 +87,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
             const variantDetails = await readFile(`${packFolderName}/packs/${variantName}/pack.json`)
                 .then(res => JSON.parse(res))
                 .then(res => res as PackDetails)
-            variantDetails.data.variantName = variantName
             variants.push(variantDetails)
         }
 
@@ -170,7 +169,7 @@ export default function Page({packBundle, pack, screenshots, versionAvailability
                         <h3>Variants</h3>
                         <SectionContentContainer>
                             {variants.map((variant, i) => <VariantButton
-                                href={`?variant=${variant.data.variantName}`}
+                                href={`?variant=${variant.name}`}
                                 key={i}
                                 colour={variant.data.colour}
                             />)}
