@@ -16,7 +16,8 @@ export interface PackDetails {
 
 export interface Author {
     name: string,
-    avatar: string
+    avatar: string,
+    youtube: string
 }
 
 export interface Metadata {

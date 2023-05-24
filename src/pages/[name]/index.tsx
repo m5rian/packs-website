@@ -217,7 +217,7 @@ export default function Page(props: TexturePackPageProps) {
                             <h3>Collaboration with</h3>
                             <SectionContentContainer>
                                 {(packBundle?.authors || pack.authors).map((author, i) => (
-                                    <UserLink key={i} text={author.name} img={author.avatar}/>
+                                    <UserLink key={i} user={author}/>
                                 ))}
                             </SectionContentContainer>
                         </Section>

@@ -1,21 +1,21 @@
 import styled from "@emotion/styled";
 import {RxArrowTopRight} from "react-icons/rx";
+import {Author} from "@/types/TexturePack";
 
 interface ComponentProps {
-    text: string,
-    img: string
+    user: Author,
 }
 
-export function UserLink({text, img}: ComponentProps) {
+export function UserLink({user}: ComponentProps) {
     return (
-        <SocialsLinkContainer href={"google.com"}>
-            <Background img={img}/>
+        <SocialsLinkContainer target="_blank" href={"https://youtube.com/" + user.youtube}>
+            <Background img={user.avatar}/>
             <DataContainer>
                 <IconWrapper>
-                    <img src={img} alt={text}/>
+                    <img src={user.avatar} alt={user.name}/>
                 </IconWrapper>
                 <Text>
-                    <p>{text}</p>
+                    <p>{user.name}</p>
                     <LinkIcon><RxArrowTopRight/></LinkIcon>
                 </Text>
             </DataContainer>
