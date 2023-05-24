@@ -170,6 +170,7 @@ export default function Page({packBundle, pack, screenshots, versionAvailability
                         <SectionContentContainer>
                             {variants.map((variant, i) => <VariantButton
                                 href={`?variant=${variant.name}`}
+                                title={variant.name}
                                 key={i}
                                 colour={variant.data?.colour?.[0]}
                             />)}
