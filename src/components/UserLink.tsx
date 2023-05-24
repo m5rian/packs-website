@@ -31,6 +31,7 @@ const SocialsLinkContainer = styled.a`
 
   border-radius: var(--border-radius);
   overflow: hidden;
+  text-decoration: none;
 `
 
 const Background = styled.div<{ img: string }>`
