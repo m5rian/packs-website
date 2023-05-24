@@ -152,7 +152,7 @@ export default function Page(props: TexturePackPageProps) {
             <Head>
                 <title>{packBundle?.name || pack.name}</title>
                 <meta property="og:title" content={packBundle?.name || pack.name}/>
-                <meta property="og:image:type" content={screenshots[0]} />
+                <meta property="og:image" content={screenshots[0]} />
                 <meta property="og:image:width" content="1920" />
                 <meta property="og:image:height" content="1080" />
             </Head>
