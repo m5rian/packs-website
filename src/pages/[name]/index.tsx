@@ -151,7 +151,8 @@ export default function Page(props: TexturePackPageProps) {
         <>
             <Head>
                 <title>{packBundle?.name || pack.name}</title>
-                <meta property="og:image" content={screenshots[0]}/>
+                <meta property="og:title" content={packBundle?.name || pack.name}/>
+                <meta property="og:thumbnail" content={screenshots[0]}/>
             </Head>
 
             <Toast condition={showCopyPopup} content={"Successfully copied link!"}/>
