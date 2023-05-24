@@ -171,7 +171,7 @@ export default function Page({packBundle, pack, screenshots, versionAvailability
                             {variants.map((variant, i) => <VariantButton
                                 href={`?variant=${variant.name}`}
                                 key={i}
-                                colour={variant.data.colour}
+                                colour={variant.data?.colour?.[0]}
                             />)}
                         </SectionContentContainer>
                     </Section>}
