@@ -26,7 +26,7 @@ export function TexturePackCard({pack}: TexturePackCardProps) {
 }
 
 const PackContainer = styled.a`
-
+  text-decoration: none;
 `
 
 const ThumbnailImage = styled.img`
