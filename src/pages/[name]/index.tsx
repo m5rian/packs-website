@@ -12,6 +12,7 @@ import React, {useState} from "react";
 import Tag from "@/components/Tag"
 import Toast from "@/components/Toast";
 import SocialLink from "@/components/SocialLink";
+import Popup from "@/components/Popup";
 
 interface PageProps {
     packBundle: PackDetails,
@@ -121,6 +122,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
 export default function Page({packBundle, pack, screenshots, versionAvailability, variants}: PageProps) {
     const [showCopyPopup, setShowCopyPopup] = useState(false)
+    const [downloadPopup, setShowDownloadPopup] = useState(false)
 
     function share() {
         if (navigator.share) {
@@ -138,12 +140,20 @@ export default function Page({packBundle, pack, screenshots, versionAvailability
         }
     }
 
+    function showDownloadPopup() {
+        setShowDownloadPopup(true)
+    }
+
     let downloadUrl = packBundle
         ? `/api/download?pack=${packBundle.folderName}&variant=${pack.folderName}`
         : `/api/download?pack=${pack.folderName}`
     return (
         <>
             <Toast condition={showCopyPopup} content={"Successfully copied link!"}/>
+            {downloadPopup && <Popup setShow={setShowDownloadPopup}>
+                Thank you for downloading 💖 Please <a href={"https://www.youtube.com/watch?v=" + pack.videoId}>
+                leave a like on the video!</a>
+            </Popup>}
 
             <Wrapper>
                 <Container>
@@ -184,11 +194,14 @@ export default function Page({packBundle, pack, screenshots, versionAvailability
                         </SectionHeaderContainer>
                         <SectionContentContainer>
                             {versionAvailability["java-1.8"] &&
-                                <DownloadButton href={`${downloadUrl}&version=java-1.8`}>Java 1.8</DownloadButton>}
+                                <DownloadButton onClick={showDownloadPopup} href={`${downloadUrl}&version=java-1.8`}>Java
+                                                                                                                     1.8</DownloadButton>}
                             {versionAvailability["java-1.18"] &&
-                                <DownloadButton href={`${downloadUrl}&version=java-1.18`}>Java 1.18+</DownloadButton>}
+                                <DownloadButton onClick={showDownloadPopup} href={`${downloadUrl}&version=java-1.18`}>Java
+                                                                                                                      1.18+</DownloadButton>}
                             {versionAvailability["bedrock"] &&
-                                <DownloadButton href={`${downloadUrl}&version=bedrock`}>Bedrock</DownloadButton>}
+                                <DownloadButton onClick={showDownloadPopup}
+                                                href={`${downloadUrl}&version=bedrock`}>Bedrock</DownloadButton>}
                         </SectionContentContainer>
                     </Section>
 
@@ -208,6 +221,7 @@ export default function Page({packBundle, pack, screenshots, versionAvailability
         </>
     )
 }
+
 const Wrapper = styled.div`
   width: 100%;
   display: flex;
