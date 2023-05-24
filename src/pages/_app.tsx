@@ -29,8 +29,8 @@ export default function MyApp({Component, pageProps}: AppPropsWithLayout) {
                 </HorizontalLayout>
                 <Section>
                     <li><h3>Socials</h3></li>
-                    <li><a href={"https://www.youtube.com/@m5rian"}>Youtube</a></li>
-                    <li><a href={"https://discord.gg/nG4uKuB"}>Discord</a></li>
+                    <li><Link href={"https://www.youtube.com/@m5rian"}>Youtube</Link></li>
+                    <li><Link href={"https://discord.gg/nG4uKuB"}>Discord</Link></li>
                 </Section>
             </Footer>
         </MainContainer>
@@ -53,7 +53,7 @@ const Footer = styled.footer`
 `
 
 const Section = styled.ul`
-    list-style: none;
+  list-style: none;
 `
 
 const HorizontalLayout = styled.div`
@@ -61,4 +61,8 @@ const HorizontalLayout = styled.div`
   align-items: center;
   gap: .5rem;
   width: fit-content;
+`
+
+const Link = styled.a`
+  text-decoration: none;
 `
