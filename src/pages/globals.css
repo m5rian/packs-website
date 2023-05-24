@@ -7,16 +7,30 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
+        --primary-1: hsl(0deg, 0%, 10%);
+        --primary-2: hsl(0deg, 0%, 15%);
+        --primary-3: hsl(0deg, 0%, 20%);
+
+        --secondary-1: #FFFF;
+        --secondary-2: #F6F5F4;
+        --secondary-3: #E7E6E5;
+        --secondary-4: #D8D7D6;
+
+        --border: solid 1px rgba(255, 255, 255, .1);
+    }
+}
+@media (prefers-color-scheme: light) {
+    :root {
         --primary-1: #FFFF;
         --primary-2: #F6F5F4;
         --primary-3: #E7E6E5;
-
-        --border: solid 1px rgba(0, 0, 0, .1);
 
         --secondary-1: hsl(0deg, 0%, 0%);
         --secondary-2: hsl(0deg, 0%, 25%);
         --secondary-3: hsl(0deg, 0%, 35%);
         --secondary-4: hsl(0deg, 0%, 50%);
+
+        --border: solid 1px rgba(0, 0, 0, .1);
     }
 }
 
