@@ -14,6 +14,7 @@ import Toast from "@/components/Toast";
 import SocialLink from "@/components/SocialLink";
 import Popup from "@/components/Popup";
 import DownloadButton from "@/components/DownloadButton";
+import Head from "next/head";
 
 export interface TexturePackPageProps {
     packBundle: PackDetails,
@@ -148,6 +149,11 @@ export default function Page(props: TexturePackPageProps) {
 
     return (
         <>
+            <Head>
+                <title>{packBundle?.name || pack.name}</title>
+                <meta property="og:image" content={screenshots[0]}/>
+            </Head>
+
             <Toast condition={showCopyPopup} content={"Successfully copied link!"}/>
             {downloadPopup && <Popup setShow={setShowDownloadPopup}>
                 Thank you for downloading 💖 Please <a href={"https://www.youtube.com/watch?v=" + pack.videoId}>
