@@ -13,8 +13,9 @@ import Tag from "@/components/Tag"
 import Toast from "@/components/Toast";
 import SocialLink from "@/components/SocialLink";
 import Popup from "@/components/Popup";
+import DownloadButton from "@/components/DownloadButton";
 
-interface PageProps {
+export interface TexturePackPageProps {
     packBundle: PackDetails,
     pack: PackDetails,
     screenshots: string[],
@@ -120,7 +121,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
 }
 
-export default function Page({packBundle, pack, screenshots, versionAvailability, variants}: PageProps) {
+export default function Page(props: TexturePackPageProps) {
+    const {packBundle, pack, screenshots, versionAvailability, variants} = props
     const [showCopyPopup, setShowCopyPopup] = useState(false)
     const [downloadPopup, setShowDownloadPopup] = useState(false)
 
@@ -140,13 +142,10 @@ export default function Page({packBundle, pack, screenshots, versionAvailability
         }
     }
 
-    function showDownloadPopup() {
+    function showThx() {
         setShowDownloadPopup(true)
     }
 
-    let downloadUrl = packBundle
-        ? `/api/download?pack=${packBundle.folderName}&variant=${pack.folderName}`
-        : `/api/download?pack=${pack.folderName}`
     return (
         <>
             <Toast condition={showCopyPopup} content={"Successfully copied link!"}/>
@@ -194,14 +193,14 @@ export default function Page({packBundle, pack, screenshots, versionAvailability
                         </SectionHeaderContainer>
                         <SectionContentContainer>
                             {versionAvailability["java-1.8"] &&
-                                <DownloadButton onClick={showDownloadPopup} href={`${downloadUrl}&version=java-1.8`}>Java
-                                                                                                                     1.8</DownloadButton>}
+                                <DownloadButton showThanks={showThx} props={props}
+                                                version={"java-1.8"}>Java 1.8</DownloadButton>}
                             {versionAvailability["java-1.18"] &&
-                                <DownloadButton onClick={showDownloadPopup} href={`${downloadUrl}&version=java-1.18`}>Java
-                                                                                                                      1.18+</DownloadButton>}
+                                <DownloadButton showThanks={showThx} props={props}
+                                                version={"java-1.18"}>Java 1.18</DownloadButton>}
                             {versionAvailability["bedrock"] &&
-                                <DownloadButton onClick={showDownloadPopup}
-                                                href={`${downloadUrl}&version=bedrock`}>Bedrock</DownloadButton>}
+                                <DownloadButton showThanks={showThx} props={props}
+                                                version={"bedrock"}>Bedrock</DownloadButton>}
                         </SectionContentContainer>
                     </Section>
 
@@ -272,17 +271,6 @@ const DownloadCount = styled.p`
   color: var(--secondary-2);
   border-radius: var(--border-radius);
   padding: .25em .5em;
-`
-
-const DownloadButton = styled.a`
-  padding: 0.8rem 1rem;
-
-  font-size: 1rem;
-  color: var(--primary-1);
-  background-color: var(--secondary-1);
-
-  border: none;
-  border-radius: var(--border-radius);
 `
 
 const VariantButton = styled.a<{ colour: string }>`
