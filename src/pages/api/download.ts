@@ -4,6 +4,13 @@ import {Readable} from "stream";
 import {createReadStream} from "fs";
 import {PackDetails} from "@/types/TexturePack";
 
+export const config = {
+    api: {
+        responseLimit: '8mb',
+    },
+}
+
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const pack = req.query.pack as string
     const variant = req.query.variant as (string | undefined)
