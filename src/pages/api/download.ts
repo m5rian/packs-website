@@ -6,7 +6,7 @@ import {PackDetails} from "@/types/TexturePack";
 
 export const config = {
     api: {
-        responseLimit: '8mb',
+        responseLimit: '25mb',
     },
 }
 
