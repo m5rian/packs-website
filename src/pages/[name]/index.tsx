@@ -154,6 +154,10 @@ export default function Page(props: TexturePackPageProps) {
                 <meta property="og:title" content={packBundle?.name || pack.name}/>
                 <meta name="twitter:card" content="summary_large_image"/>
                 <meta name="twitter:image:src" content={screenshots[0]}/>
+                <script async
+                        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3472245250960619"
+                        crossOrigin="anonymous"
+                ></script>
             </Head>
 
             <Toast condition={showCopyPopup} content={"Successfully copied link!"}/>
