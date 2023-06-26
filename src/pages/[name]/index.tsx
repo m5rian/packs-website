@@ -78,8 +78,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
             .then(string => JSON.parse(string))
             .then(json => ({...json, folderName: packVariant} as PackDetails))
 
-        const imageFolderUrl = `https://packs-resources.myra.bot/${rootPackDetails.folderName}/images/`
-        const screenshotFolderUrl = `https://packs-resources.myra.bot/${rootPackDetails.folderName}/packs/${packVariant}/screenshots/`
+        const imageFolderUrl = `https://packs-resources.marian.website/${rootPackDetails.folderName}/images/`
+        const screenshotFolderUrl = `https://packs-resources.marian.website/${rootPackDetails.folderName}/packs/${packVariant}/screenshots/`
         const screenshots = await getScreenshots(imageFolderUrl, screenshotFolderUrl)
 
         let downloadFolderPath = `${rootPackDetails.folderName}/packs/${packVariant}/downloads/`
@@ -105,8 +105,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         };
     }
 
-    const imageFolderUrl = `https://packs-resources.myra.bot/${rootPackDetails.folderName}/images/`
-    const screenshotFolderUrl = `https://packs-resources.myra.bot/${rootPackDetails.folderName}/images/screenshots/`
+    const imageFolderUrl = `https://packs-resources.marian.website/${rootPackDetails.folderName}/images/`
+    const screenshotFolderUrl = `https://packs-resources.marian.website/${rootPackDetails.folderName}/images/screenshots/`
     const screenshots = await getScreenshots(imageFolderUrl, screenshotFolderUrl)
 
     const downloadFolderPath = `${packFolderName}/downloads`
