@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         : `packs/${pack}/downloads/${version}/${fileName}`
 
     res.setHeader("Content-Type", "application/octet-stream")
-    res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`)
+    res.setHeader("Content-Disposition", `attachment; filename="${encodeURIComponent(fileName)}"`)
     res.setHeader("Filename", fileName)
 
     const fileStream = createReadStream(filePath)
