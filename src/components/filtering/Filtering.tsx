@@ -4,7 +4,7 @@ import {Filters, SortType} from "@/pages";
 import {HiFilter} from "react-icons/hi";
 import {PackDetails} from "@/types/TexturePack";
 import FilterCategory from "@/components/filtering/FilterCategory";
-import React from "react";
+import React, {MutableRefObject, useEffect, useRef, useState} from "react";
 import FilterOption from "@/components/filtering/FilterOption";
 
 interface Props {
@@ -16,36 +16,43 @@ interface Props {
 }
 
 export default function Filtering({packs, handleSortBy, updateSearchQuery, activeFilters, setFilters}: Props) {
+    const [showFilter, setShowFilter] = useState(false)
+    const [showSorting, setShowSorting] = useState(false)
+
     return (
         <FilterContainer>
             <SearchInput onChange={event => updateSearchQuery(event.target.value)} type="text" placeholder="search"/>
 
             <FilteringContainer>
-                <Button>
+                <Button onClick={() => setShowFilter(!showFilter)}>
                     <IconWrapper>
                         <HiFilter/>
                     </IconWrapper>
                     <p>Filter</p>
 
-                    <OptionsContainer>
-                        <FilterCategory packs={packs} prop={"resolution"} activeFilters={activeFilters}
-                                        setFilters={setFilters}/>
-                        <FilterCategory packs={packs} prop={"version"} activeFilters={activeFilters}
-                                        setFilters={setFilters}/>
-                    </OptionsContainer>
+                    {showFilter ?
+                        <OptionsContainer>
+                            <FilterCategory packs={packs} prop={"resolution"} activeFilters={activeFilters}
+                                            setFilters={setFilters}/>
+                            <FilterCategory packs={packs} prop={"version"} activeFilters={activeFilters}
+                                            setFilters={setFilters}/>
+                        </OptionsContainer>
+                        : ""}
                 </Button>
-                <Button>
+                <Button onClick={() => setShowSorting(!showSorting)}>
                     <IconWrapper>
                         <BiSortAlt2/>
                     </IconWrapper>
                     <p>Sort By</p>
 
-                    <OptionsContainer>
-                        <FilterOption onClick={() => handleSortBy("name")}>Name</FilterOption>
-                        <FilterOption onClick={() => handleSortBy("date-newest")}>Newest</FilterOption>
-                        <FilterOption onClick={() => handleSortBy("date-oldest")}>Oldest</FilterOption>
-                        <FilterOption onClick={() => handleSortBy("downloads")}>Popular</FilterOption>
-                    </OptionsContainer>
+                    {showSorting ?
+                        <OptionsContainer>
+                            <FilterOption onClick={() => handleSortBy("name")}>Name</FilterOption>
+                            <FilterOption onClick={() => handleSortBy("date-newest")}>Newest</FilterOption>
+                            <FilterOption onClick={() => handleSortBy("date-oldest")}>Oldest</FilterOption>
+                            <FilterOption onClick={() => handleSortBy("downloads")}>Popular</FilterOption>
+                        </OptionsContainer>
+                        : ""}
                 </Button>
             </FilteringContainer>
         </FilterContainer>
@@ -61,11 +68,6 @@ const Button = styled.button`
   align-items: center;
   justify-content: center;
   gap: .5rem;
-
-  &:focus-within > div {
-    display: flex;
-    flex-direction: column;
-  }
 `
 
 const OptionsContainer = styled.div`
@@ -73,13 +75,14 @@ const OptionsContainer = styled.div`
   background-color: var(--primary-1);
   top: 4rem;
 
-  display: none;
+  display: flex;
   flex-direction: column;
   align-items: start;
   gap: .5rem;
 
   border-radius: var(--border-radius);
   border: var(--border);
+  z-index: 1;
 `
 
 const FilteringContainer = styled.div`
