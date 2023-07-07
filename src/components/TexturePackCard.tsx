@@ -2,12 +2,19 @@ import styled from "@emotion/styled";
 import {PackDetails} from "@/types/TexturePack";
 import {MdDownload} from "react-icons/md";
 import {BsFillCalendarDateFill} from "react-icons/bs";
+import {useEffect, useState} from "react";
 
 type TexturePackCardProps = {
     pack: PackDetails
 }
 
 export function TexturePackCard({pack}: TexturePackCardProps) {
+    const [date, setDate] = useState("")
+
+    useEffect(() =>  {
+        setDate(new Date(pack.releaseDate * 1000).toLocaleDateString(undefined))
+    }, [])
+
     return (
         <PackContainer href={`/${pack.folderName}`}>
             <ThumbnailImage loading={"lazy"}
@@ -15,7 +22,7 @@ export function TexturePackCard({pack}: TexturePackCardProps) {
             <PackInfoContainer>
                 <Info><MdDownload/>{pack.downloads}</Info>
                 <Info>
-                    <BsFillCalendarDateFill/>{new Date(pack.releaseDate * 1000).toLocaleDateString(undefined)}
+                    <BsFillCalendarDateFill/>{date}
                 </Info>
                 {pack.data !== undefined && "resolution" in pack.data &&
                     <Info>{pack.data.resolution}x</Info>
