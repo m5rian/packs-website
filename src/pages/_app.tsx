@@ -4,6 +4,7 @@ import type {AppProps} from 'next/app';
 import {Inter} from 'next/font/google';
 import './globals.css';
 import styled from "@emotion/styled";
+import Head from "next/head";
 
 const inter = Inter({subsets: ['latin']});
 
@@ -17,23 +18,30 @@ type AppPropsWithLayout = AppProps & {
 
 export default function MyApp({Component, pageProps}: AppPropsWithLayout) {
     return (
-        <MainContainer className={inter.className}>
-            <Component {...pageProps} />
-            <Footer>
-                <HorizontalLayout>
-                    <img src={"/favicon.ico"} alt={""}/>
+        <>
+            <Head>
+                <script async
+                        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3472245250960619"
+                        crossOrigin="anonymous"></script>
+            </Head>
+            <MainContainer className={inter.className}>
+                <Component {...pageProps} />
+                <Footer>
+                    <HorizontalLayout>
+                        <img src={"/favicon.ico"} alt={""}/>
+                        <Section>
+                            <li>Website by marian</li>
+                            <li>Copyright © 2023 marian</li>
+                        </Section>
+                    </HorizontalLayout>
                     <Section>
-                        <li>Website by marian</li>
-                        <li>Copyright © 2023 marian</li>
+                        <li><h3>Socials</h3></li>
+                        <li><Link href={"https://www.youtube.com/@m5rian"}>Youtube</Link></li>
+                        <li><Link href={"https://discord.gg/nG4uKuB"}>Discord</Link></li>
                     </Section>
-                </HorizontalLayout>
-                <Section>
-                    <li><h3>Socials</h3></li>
-                    <li><Link href={"https://www.youtube.com/@m5rian"}>Youtube</Link></li>
-                    <li><Link href={"https://discord.gg/nG4uKuB"}>Discord</Link></li>
-                </Section>
-            </Footer>
-        </MainContainer>
+                </Footer>
+            </MainContainer>
+        </>
     );
 }
 
