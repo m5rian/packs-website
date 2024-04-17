@@ -20,12 +20,10 @@ export default function MyApp({Component, pageProps}: AppPropsWithLayout) {
     return (
         <>
             <Head>
-                <script async
-                        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3472245250960619"
-                        crossOrigin="anonymous"></script>
+                <meta name="google-adsense-account" content="ca-pub-3472245250960619"/>
             </Head>
             <MainContainer className={inter.className}>
-                <Component {...pageProps} />
+            <Component {...pageProps} />
                 <Footer>
                     <HorizontalLayout>
                         <img src={"/favicon.ico"} alt={""}/>
