@@ -2,8 +2,9 @@ import styled from "@emotion/styled";
 import {TexturePackCard} from "@/components/TexturePackCard";
 import Filtering from "@/components/filtering/Filtering";
 import {PackDetails} from "@/types/TexturePack";
-import {useState} from "react";
+import React, {useState} from "react";
 import {listFolderFiles, readFile} from "@/utils";
+import Head from "next/head";
 
 interface PageProps {
     packs: PackDetails[]
@@ -30,6 +31,7 @@ export async function getStaticProps() {
 }
 
 export type SortType = "name" | "date-newest" | "date-oldest" | "downloads"
+
 export default function Home(props: PageProps) {
     const {packs} = props;
     const [sortType, setSortType] = useState<SortType>("date-newest")
@@ -79,19 +81,27 @@ export default function Home(props: PageProps) {
     }
 
     return (
-        <Container>
-            <h1>Texture Packs</h1>
-            <Filtering packs={packs}
-                       handleSortBy={setSortType}
-                       updateSearchQuery={setSearchQuery}
-                       activeFilters={filters}
-                       setFilters={setFilters}/>
-            <TexturePacksContainer>
-                {filterPacks(getSortedPacks()).map((pack, index) => (
-                    <TexturePackCard pack={pack} key={index}/>
-                ))}
-            </TexturePacksContainer>
-        </Container>
+        <>
+            <Head>
+                <title>Texture Packs by marian</title>
+                <meta property="og:title" content="Texture Packs by marian"/>
+                <meta name="description" content="PvP aimed Minecraft texture packs"/>
+            </Head>
+
+            <Container>
+                <h1>Texture Packs</h1>
+                <Filtering packs={packs}
+                           handleSortBy={setSortType}
+                           updateSearchQuery={setSearchQuery}
+                           activeFilters={filters}
+                           setFilters={setFilters}/>
+                <TexturePacksContainer>
+                    {filterPacks(getSortedPacks()).map((pack, index) => (
+                        <TexturePackCard pack={pack} key={index}/>
+                    ))}
+                </TexturePacksContainer>
+            </Container>
+        </>
     )
 }
 
