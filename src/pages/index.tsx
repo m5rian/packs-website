@@ -90,7 +90,7 @@ export default function Home(props: PageProps) {
 
             <Container>
                 <h1>Texture Packs</h1>
-                <p>Download pvp aimed texture packs for Minecraft for free!</p>
+                <Subtext>Download pvp aimed texture packs for Minecraft for free!</Subtext>
                 <Filtering packs={packs}
                            handleSortBy={setSortType}
                            updateSearchQuery={setSearchQuery}
@@ -118,4 +118,8 @@ const TexturePacksContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
   gap: 2.5rem;
+`
+
+const Subtext = styled.p`
+  text-align: center;
 `
