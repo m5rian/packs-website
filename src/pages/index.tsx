@@ -90,6 +90,7 @@ export default function Home(props: PageProps) {
 
             <Container>
                 <h1>Texture Packs</h1>
+                <p>Download pvp aimed texture packs for Minecraft for free!</p>
                 <Filtering packs={packs}
                            handleSortBy={setSortType}
                            updateSearchQuery={setSearchQuery}
