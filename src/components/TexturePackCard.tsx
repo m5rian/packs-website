@@ -18,7 +18,7 @@ export function TexturePackCard({pack}: TexturePackCardProps) {
     return (
         <PackContainer href={`/${pack.folderName}`}>
             <ThumbnailImage loading={"lazy"}
-                            src={`https://packs-resources.marian.website/${pack.folderName}/images/thumbnail.jpg`}/>
+                            src={`https://packs-resources.marian.website/${pack.folderName}/images/thumbnail.webp`}/>
             <PackInfoContainer>
                 <Info><MdDownload/>{pack.downloads}</Info>
                 <Info>
