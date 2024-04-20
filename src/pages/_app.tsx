@@ -21,20 +21,28 @@ export default function MyApp({Component, pageProps}: AppPropsWithLayout) {
             </Head>
             <MainContainer>
                 <Component {...pageProps} />
-                <Footer>
+                <div className="p-5 flex justify-between border-t border-t-primary-1">
                     <HorizontalLayout>
-                        <img src={"/favicon.ico"} alt={""}/>
-                        <Section>
-                            <li>Website by marian</li>
-                            <li>Copyright © 2023 marian</li>
-                        </Section>
+                        <img className="h-10" src={"/favicon.ico"} alt={"logo"}/>
+                        <div>
+                            <p className="text-secondary-4 text-sm leading-snug">Website by marian</p>
+                            <p className="text-secondary-4 text-sm leading-snug">Copyright © 2023-{new Date().getFullYear()} marian</p>
+                        </div>
                     </HorizontalLayout>
-                    <Section>
-                        <li><h3>Socials</h3></li>
-                        <li><Link href={"https://www.youtube.com/@m5rian"}>Youtube</Link></li>
-                        <li><Link href={"https://discord.gg/nG4uKuB"}>Discord</Link></li>
-                    </Section>
-                </Footer>
+
+                    <ul className="flex gap-10">
+                        <ul>
+                            <li><h3 className="text-lg font-medium text-secondary-2">Pages</h3></li>
+                            <li><a className="text-secondary-3" href={"/"}>Home</a></li>
+                            <li><a className="text-secondary-3" href={"/terms"}>Terms of Service</a></li>
+                        </ul>
+                        <ul>
+                            <li><h3 className="text-lg font-medium text-secondary-2">Socials</h3></li>
+                            <li><a className="text-secondary-3" href={"https://www.youtube.com/@m5rian"}>Youtube</a></li>
+                            <li><a className="text-secondary-3" href={"https://discord.gg/nG4uKuB"}>Discord</a></li>
+                        </ul>
+                    </ul>
+                </div>
             </MainContainer>
         </>
     );
@@ -47,25 +55,9 @@ const MainContainer = styled.main`
   justify-content: space-between;
 `
 
-const Footer = styled.footer`
-  margin-top: 5rem;
-  border-top: var(--border);
-  padding: 2rem;
-  display: flex;
-  justify-content: space-around;
-`
-
-const Section = styled.ul`
-  list-style: none;
-`
-
 const HorizontalLayout = styled.div`
   display: flex;
   align-items: center;
   gap: .5rem;
   width: fit-content;
-`
-
-const Link = styled.a`
-  text-decoration: none;
 `
