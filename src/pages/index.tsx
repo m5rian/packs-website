@@ -16,11 +16,13 @@ export interface Filters {
 
 export async function getStaticProps() {
     const packs = await listFolderFiles("/")
-    const packDetailsPromises = packs.map(name => {
-        return readFile(`${name}/pack.json`)
-            .then(res => JSON.parse(res))
-            .then(json => ({...json, folderName: name} as PackDetails));
-    })
+    const packDetailsPromises = packs
+        .filter(name => !name.startsWith("_")) // Filter out private files that start with _
+        .map(name => {
+            return readFile(`${name}/pack.json`)
+                .then(res => JSON.parse(res))
+                .then(json => ({...json, folderName: name} as PackDetails));
+        })
     const packDetails = await Promise.all(packDetailsPromises)
 
     return {
