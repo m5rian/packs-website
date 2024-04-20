@@ -13,21 +13,17 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          1: 'hsl(0deg, 0%, 10%)',
-          2: 'hsl(0deg, 0%, 15%)',
-          3: 'hsl(0deg, 0%, 20%)',
+          '1': 'hsl(var(--primary-1) / <alpha-value>)',
+          '2': 'hsl(var(--primary-2) / <alpha-value>)',
+          '3': 'hsl(var(--primary-3) / <alpha-value>)',
         },
         secondary: {
-          1: '#FFFF',
-          2: '#F6F5F4',
-          3: '#E7E6E5',
-          4: '#D8D7D6',
+          '1': 'hsl(var(--secondary-1) / <alpha-value>)',
+          '2': 'hsl(var(--secondary-2) / <alpha-value>)',
+          '3': 'hsl(var(--secondary-3) / <alpha-value>)',
+          '4': 'hsl(var(--secondary-4) / <alpha-value>)',
         },
       },
-      borderColor: theme => ({
-        ...theme('colors'),
-        DEFAULT: 'rgba(255, 255, 255, .1)',
-      }),
     },
   },
 

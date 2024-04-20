@@ -11,32 +11,30 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --primary-1: hsl(0deg, 0%, 10%);
-        --primary-2: hsl(0deg, 0%, 15%);
-        --primary-3: hsl(0deg, 0%, 20%);
+        --primary-1: 0deg 0% 10%;
+        --primary-2: 0deg 0% 15%;
+        --primary-3: 0deg 0% 20%;
 
-        --secondary-1: #FFFF;
-        --secondary-2: #F6F5F4;
-        --secondary-3: #E7E6E5;
-        --secondary-4: #D8D7D6;
-
-        --border: solid 1px rgba(255, 255, 255, .1);
+        --secondary-1: 0deg 0% 100%;
+        --secondary-2: 0deg 0% 96%;
+        --secondary-3: 0deg 0% 90%;
+        --secondary-4: 0deg 0% 85%;
     }
 }
+
 @media (prefers-color-scheme: light) {
     :root {
-        --primary-1: #FFFF;
-        --primary-2: #F6F5F4;
-        --primary-3: #E7E6E5;
+        --primary-1: 0deg 0% 100%;
+        --primary-2: 0deg 0% 96%;
+        --primary-3: 0deg 0% 90%;
 
-        --secondary-1: hsl(0deg, 0%, 0%);
-        --secondary-2: hsl(0deg, 0%, 25%);
-        --secondary-3: hsl(0deg, 0%, 35%);
-        --secondary-4: hsl(0deg, 0%, 50%);
-
-        --border: solid 1px rgba(0, 0, 0, .1);
+        --secondary-1: 0deg 0% 0%;
+        --secondary-2: 0deg 0% 25%;
+        --secondary-3: 0deg 0% 35%;
+        --secondary-4: 0deg 0% 50%;
     }
 }
+
 
 * {
     box-sizing: border-box;
@@ -50,46 +48,8 @@ html, body {
     max-width: 100vw;
 }
 
-a {
-    color: inherit;
-}
-
 @media (prefers-color-scheme: dark) {
     html {
         color-scheme: dark;
-    }
-}
-
-h1 {
-    font-size: 7rem;
-    font-weight: 800;
-    color: var(--secondary-1);
-    text-align: center;
-}
-h2 {
-    font-size: 5rem;
-    font-weight: 800;
-    color: var(--secondary-1);
-}
-h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--secondary-1);
-}
-h4 {
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--secondary-1);
-}
-
-p, li {
-    color: var(--secondary-2);
-}
-@media (max-width: 500px) {
-    h1 {
-        font-size: 5rem;
-    }
-    h2 {
-        font-size: 3rem;
     }
 }
