@@ -35,9 +35,9 @@ async function getScreenshots(imageFolderUrl: string, screenshotsFolderUrl: stri
     return await fetch(screenshotsFolderUrl)
         .then(res => res.json())
         .then(json => json as ResourceFileDescription[])
-        .then(files => files.map(file => {
-            return `${screenshotsFolderUrl}${file.name}`
-        }))
+        // Only get optimized .webp images
+        .then(files => files.filter(file => file.name.endsWith(".webp")))
+        .then(files => files.map(file => `${screenshotsFolderUrl}${file.name}`))
         .then(screenshots => {
             //const thumbnail = `${imageFolderUrl}thumbnail.jpg`
             //return [thumbnail, ...screenshots]
@@ -185,7 +185,7 @@ export default function Page(props: TexturePackPageProps) {
                     </ImageCarouselWrapper>
 
                     {variants.length !== 0 && <Section>
-                        <h2 className="text-2xl tracking-tight font-bold text-secondary-1" >Variants</h2>
+                        <h2 className="text-2xl tracking-tight font-bold text-secondary-1">Variants</h2>
                         <SectionContentContainer>
                             {variants.map((variant, i) => <VariantButton
                                 className="h-8 aspect-square rounded-full border border-primary-3"
@@ -199,8 +199,9 @@ export default function Page(props: TexturePackPageProps) {
 
                     <Section>
                         <div className="inline-flex items-center gap-2">
-                            <h2 className="text-2xl tracking-tight font-bold text-secondary-1" >Downloads</h2>
-                            <p className="flex items-center gap-0.5 bg-primary-2 px-2 py-0.5 rounded text-sm text-secondary-1"><MdDownload/> {pack.downloads}</p>
+                            <h2 className="text-2xl tracking-tight font-bold text-secondary-1">Downloads</h2>
+                            <p className="flex items-center gap-0.5 bg-primary-2 px-2 py-0.5 rounded text-sm text-secondary-1">
+                                <MdDownload/> {pack.downloads}</p>
                         </div>
                         <SectionContentContainer>
                             {versionAvailability["java-1.8"] &&
