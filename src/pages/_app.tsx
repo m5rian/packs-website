@@ -1,12 +1,9 @@
 import type {ReactElement, ReactNode} from 'react';
 import type {NextPage} from 'next';
 import type {AppProps} from 'next/app';
-import {Inter} from 'next/font/google';
 import './globals.css';
 import styled from "@emotion/styled";
 import Head from "next/head";
-
-const inter = Inter({subsets: ['latin']});
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
     getLayout?: (page: ReactElement) => ReactNode;
@@ -22,8 +19,8 @@ export default function MyApp({Component, pageProps}: AppPropsWithLayout) {
             <Head>
                 <meta name="google-adsense-account" content="ca-pub-3472245250960619"/>
             </Head>
-            <MainContainer className={inter.className}>
-            <Component {...pageProps} />
+            <MainContainer>
+                <Component {...pageProps} />
                 <Footer>
                     <HorizontalLayout>
                         <img src={"/favicon.ico"} alt={""}/>
