@@ -22,13 +22,13 @@ export default function ImageCarousel({images}: ComponentProps) {
     return (
         <Container counter={counter}>
             {counter === 0 ? (
-                <DisabledNavigationButton onClick={decreaseCount}>
+                <button className="flex bg-primary-2 rounded text-3xl text-secondary-4" onClick={decreaseCount}>
                     <HiChevronLeft/>
-                </DisabledNavigationButton>
+                </button>
             ) : (
-                <NavigationButton onClick={decreaseCount}>
+                <button className="flex bg-primary-2 rounded text-3xl text-secondary-1" onClick={decreaseCount}>
                     <HiChevronLeft/>
-                </NavigationButton>
+                </button>
             )}
             <ImagesWrapper>
                 <ImagesContainer>
@@ -40,13 +40,13 @@ export default function ImageCarousel({images}: ComponentProps) {
                 </ImagesContainer>
             </ImagesWrapper>
             {counter === images.length - 1 ? (
-                <DisabledNavigationButton onClick={increaseCounter}>
+                <button className="flex bg-primary-2 rounded text-3xl text-secondary-4" onClick={increaseCounter}>
                     <HiChevronRight/>
-                </DisabledNavigationButton>
+                </button>
             ) : (
-                <NavigationButton onClick={increaseCounter}>
+                <button className="flex bg-primary-2 rounded text-3xl text-secondary-1" onClick={increaseCounter}>
                     <HiChevronRight/>
-                </NavigationButton>
+                </button>
             )}
         </Container>
     )
@@ -66,8 +66,8 @@ const NavigationButton = styled.div`
 
   display: flex;
 
-  background-color: var(--primary-2);
-  border-radius: var(--border-radius);
+  //background-color: var(--primary-2);
+  //border-radius: var(--border-radius);
 `
 
 const DisabledNavigationButton = styled(NavigationButton)`

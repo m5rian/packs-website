@@ -16,9 +16,11 @@ export default function SocialLink({url, callback, children}: ComponentProps) {
         }
     }
 
-    return (<Wrapper target={"_blank"} href={url} onClick={click}>
-        {children}
-    </Wrapper>)
+    return (
+        <a className="w-10 aspect-square flex items-center justify-center text-2xl text-secondary-1 bg-primary-2 rounded-full" target={"_blank"} href={url} onClick={click}>
+            {children}
+        </a>
+    )
 }
 
 SocialLink.defaultProps = {
@@ -26,17 +28,3 @@ SocialLink.defaultProps = {
     callback: () => {
     }
 }
-
-const Wrapper = styled.a`
-  width: 2.5rem;
-  height: 2.5rem;
-  
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 1.5rem;
-  background-color: var(--primary-2);
-  color: var(--secondary-2);
-  border-radius: 50%;
-`

@@ -165,10 +165,10 @@ export default function Page(props: TexturePackPageProps) {
 
             <Wrapper>
                 <Container>
-                    <h2>{packBundle?.name || pack.name}</h2>
-                    <TagContainer>
+                    <h1 className="text-6xl font-bold tracking-tight text-secondary-1">{packBundle?.name || pack.name}</h1>
+                    <div className="flex">
                         {(packBundle?.tags || pack.tags)?.map((tag, i) => <Tag tag={tag} key={i}/>)}
-                    </TagContainer>
+                    </div>
 
                     <SectionContentContainer>
                         <SocialLink callback={share}>
@@ -184,9 +184,10 @@ export default function Page(props: TexturePackPageProps) {
                     </ImageCarouselWrapper>
 
                     {variants.length !== 0 && <Section>
-                        <h3>Variants</h3>
+                        <h2 className="text-2xl tracking-tight font-bold text-secondary-1" >Variants</h2>
                         <SectionContentContainer>
                             {variants.map((variant, i) => <VariantButton
+                                className="h-8 aspect-square rounded-full border border-primary-3"
                                 href={`?variant=${variant.name}`}
                                 title={variant.name}
                                 key={i}
@@ -196,10 +197,10 @@ export default function Page(props: TexturePackPageProps) {
                     </Section>}
 
                     <Section>
-                        <SectionHeaderContainer>
-                            <h3>Downloads</h3>
-                            <DownloadCount><MdDownload/> {pack.downloads}</DownloadCount>
-                        </SectionHeaderContainer>
+                        <div className="inline-flex items-center gap-2">
+                            <h2 className="text-2xl tracking-tight font-bold text-secondary-1" >Downloads</h2>
+                            <p className="flex items-center gap-0.5 bg-primary-2 px-2 py-0.5 rounded text-sm text-secondary-1"><MdDownload/> {pack.downloads}</p>
+                        </div>
                         <SectionContentContainer>
                             {versionAvailability["java-1.8"] &&
                                 <DownloadButton showThanks={showThx} props={props}
@@ -245,7 +246,6 @@ const Container = styled.div`
   gap: 1rem;
 `
 
-
 const ImageCarouselWrapper = styled.div`
   width: 100%;
   max-width: 1000px;
@@ -257,40 +257,11 @@ const Section = styled.div`
   gap: .5rem;
 `
 
-const SectionHeaderContainer = styled.div`
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-`
-
 const SectionContentContainer = styled.div`
   display: flex;
-  gap: .2rem;
-`
-
-
-const DownloadCount = styled.p`
-  font-size: .8rem;
-
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-
-  background-color: var(--primary-2);
-  color: var(--secondary-2);
-  border-radius: var(--border-radius);
-  padding: .25em .5em;
+  gap: .25rem;
 `
 
 const VariantButton = styled.a<{ colour: string }>`
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  border: var(--border);
   background-color: ${props => props.colour};
-`
-
-const TagContainer = styled.div`
-  display: flex;
-  gap: 1rem;
 `
