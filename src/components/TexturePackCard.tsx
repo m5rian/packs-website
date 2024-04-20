@@ -16,46 +16,17 @@ export function TexturePackCard({pack}: TexturePackCardProps) {
     }, [])
 
     return (
-        <PackContainer href={`/${pack.folderName}`}>
-            <ThumbnailImage loading={"lazy"}
-                            src={`https://packs-resources.marian.website/${pack.folderName}/images/thumbnail.webp`}/>
-            <PackInfoContainer>
-                <Info><MdDownload/>{pack.downloads}</Info>
-                <Info>
+        <a href={`/${pack.folderName}`}>
+            <img className="rounded shadow-lg shadow-primary-2 mb-1" loading={"lazy"} src={`https://packs-resources.marian.website/${pack.folderName}/images/thumbnail.webp`}/>
+            <div className="flex gap-2">
+                <div className="text-xs text-secondary-2 font-medium flex items-center gap-1"><MdDownload/>{pack.downloads}</div>
+                <div className="text-xs text-secondary-2 font-medium flex items-center gap-1">
                     <BsFillCalendarDateFill/>{date}
-                </Info>
+                </div>
                 {pack.data !== undefined && "resolution" in pack.data &&
-                    <Info>{pack.data.resolution}x</Info>
+                    <div className="text-xs text-secondary-2 font-medium flex items-center gap-1">{pack.data.resolution}x</div>
                 }
-            </PackInfoContainer>
-        </PackContainer>
+            </div>
+        </a>
     )
 }
-
-const PackContainer = styled.a`
-  text-decoration: none;
-`
-
-const ThumbnailImage = styled.img`
-  width: 100%;
-  aspect-ratio: 16/9;
-  border-radius: var(--border-radius);
-  box-shadow: 0 0 10px rgba(0, 0, 0, .2);
-
-  transition: box-shadow .2s;
-`
-
-const PackInfoContainer = styled.div`
-  display: flex;
-  gap: 1rem;
-`
-
-const Info = styled.p`
-  font-size: .8rem;
-  color: var(--secondary-3);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: .2rem;
-`
