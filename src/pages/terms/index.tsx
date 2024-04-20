@@ -3,7 +3,7 @@ import React from "react";
 
 function formatTimestamp(timestamp: number) {
     const date = new Date(timestamp)
-    const options = {
+    const options: Intl.DateTimeFormatOptions = {
         weekday: 'long',
         year: 'numeric',
         month: 'long',
