@@ -39,8 +39,9 @@ async function getScreenshots(imageFolderUrl: string, screenshotsFolderUrl: stri
             return `${screenshotsFolderUrl}${file.name}`
         }))
         .then(screenshots => {
-            const thumbnail = `${imageFolderUrl}thumbnail.jpg`
-            return [thumbnail, ...screenshots]
+            //const thumbnail = `${imageFolderUrl}thumbnail.jpg`
+            //return [thumbnail, ...screenshots]
+            return screenshots
         })
 }
 
