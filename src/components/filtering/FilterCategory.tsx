@@ -32,15 +32,14 @@ export default function FilterCategory({packs, prop, activeFilters, setFilters}:
         console.log(updatedFilters)
     }
 
-    return <div style={{width: "100%"}}>
-        <Title>{prop}</Title>
+    return <div>
+        <h4 className="px-4 py-2 text-start text-secondary-1">{prop}</h4>
         <OptionsContainer>
             {optionsSet.map((option, i) => {
                 return (
-                    <FilterOption onClick={() => onClick(option)} key={i}
-                                  enabled={activeFilters[prop]?.includes(option)}>
+                    <FilterOption onClick={() => onClick(option)} key={i} enabled={activeFilters[prop]?.includes(option)}>
                         {option ?? "None"}
-                        <Count>{count(option)}</Count>
+                        <span className="text-secondary-4">{count(option)}</span>
                     </FilterOption>
                 );
             })}
@@ -48,17 +47,8 @@ export default function FilterCategory({packs, prop, activeFilters, setFilters}:
     </div>
 }
 
-const Title = styled.h4`
-  padding: .5rem 1rem;
-  text-align: start;
-`
 const OptionsContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: start;
-`
-
-const Count = styled.span`
-  margin-left: auto;
-  color: var(--secondary-4);
 `

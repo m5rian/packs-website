@@ -9,27 +9,11 @@ interface ComponentProps {
 }
 
 export default function FilterOption({onClick, enabled, children}: ComponentProps) {
-    return <Wrapper enabled={enabled} onClick={onClick}>{children}</Wrapper>
+    return <button
+        onClick={onClick}
+        className={`w-full px-4 py-2 ${enabled ? "bg-primary-2 text-secondary-2" : "bg-primary-1 text-secondary-3"} hover:bg-primary-2 flex justify-between text-sm text-start`}
+    >{children}</button>
 }
-
-const Wrapper = styled.p<{ enabled: boolean }>`
-  width: 100%;
-  padding: .75rem 1rem;
-
-  display: flex;
-
-  text-align: start;
-  border-radius: var(--border-radius);
-
-  &:hover {
-    background-color: var(--primary-2);
-  }
-
-  ${prop => prop.enabled && css`
-    background-color: var(--primary-3) !important;
-  `}
-}
-`
 
 FilterOption.defaultProps = {
     enabled: false
