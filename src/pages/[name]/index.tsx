@@ -15,7 +15,6 @@ import SocialLink from "@/components/SocialLink";
 import Popup from "@/components/Popup";
 import DownloadButton from "@/components/DownloadButton";
 import Head from "next/head";
-import Script from "next/script";
 
 export interface TexturePackPageProps {
     packBundle: PackDetails,
@@ -35,8 +34,8 @@ async function getScreenshots(imageFolderUrl: string, screenshotsFolderUrl: stri
     return await fetch(screenshotsFolderUrl)
         .then(res => res.json())
         .then(json => json as ResourceFileDescription[])
-        // Only get optimized .webp images
-        .then(files => files.filter(file => file.name.endsWith(".webp")))
+        // Only get optimized .webp or .mp4 media
+        .then(files => files.filter(file => file.name.endsWith(".webp") || file.name.endsWith(".mp4")))
         .then(files => files.map(file => `${screenshotsFolderUrl}${file.name}`))
         .then(screenshots => {
             //const thumbnail = `${imageFolderUrl}thumbnail.jpg`

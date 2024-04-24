@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import {HiChevronLeft, HiChevronRight} from "react-icons/hi";
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
+import {FaVolumeHigh, FaVolumeXmark} from "react-icons/fa6";
 
 interface ComponentProps {
     images: string[]
@@ -8,15 +9,49 @@ interface ComponentProps {
 
 export default function ImageCarousel({images}: ComponentProps) {
     let [counter, setCount] = useState(0)
+    let [muted, setMuted] = useState(true)
+
+    function toggleMute() {
+        setMuted(!muted)
+    }
 
     function decreaseCount() {
         if (counter == 0) return
-        else setCount(counter - 1)
+        else {
+            pauseMedia(counter) // pause previous video
+            setCount(counter - 1)
+        }
     }
 
     function increaseCounter() {
         if (counter == images.length - 1) return
-        else setCount(counter + 1)
+        else {
+            pauseMedia(counter) // pause previous video
+            setCount(counter + 1) // Increase counter to show next video
+        }
+    }
+
+    // Set mute state of current video to current mute state
+    useEffect(() => {
+        const activeMedia = images[counter]
+        if (activeMedia.endsWith(".mp4")) {
+            const video = document.querySelector(`#media-${counter}`) as HTMLVideoElement
+            video.play().then(() => {
+                video.muted = muted
+            })
+        }
+    }, [counter, muted]);
+
+    /**
+     * Mute the video at the given index, ignoring the current mute state.
+     * @param index The index of the video to mute.
+     */
+    function pauseMedia(index: number) {
+        const activeMedia = images[index]
+        if (activeMedia.endsWith(".mp4")) {
+            const video = document.querySelector(`#media-${index}`) as HTMLVideoElement
+            video.pause()
+        }
     }
 
     return (
@@ -32,11 +67,24 @@ export default function ImageCarousel({images}: ComponentProps) {
             )}
             <ImagesWrapper>
                 <ImagesContainer>
-                    {images.map((imageUrl, index) => <Image
-                        key={index}
-                        loading={index == 0 ? "eager" : "lazy"}
-                        src={imageUrl}
-                    />)}
+                    {images.map((mediaUrl, index) =>
+                        mediaUrl.endsWith(".webp") ? (
+                            <Image
+                                key={index}
+                                loading={index == 0 ? "eager" : "lazy"}
+                                src={mediaUrl}
+                            />
+                        ) : (
+                            <CarouselItem key={index} className="relative min-w-full">
+                                <button className="absolute z-10 right-2 bottom-2 bg-primary-2/75 hover:bg-primary-3/75 p-2 rounded-full text-2xl text-secondary-2 hover:text-secondary-1" onClick={toggleMute}>
+                                    {muted ? <FaVolumeXmark/> : <FaVolumeHigh/>}
+                                </button>
+                                <video id={`media-${index}`} autoPlay={index === 0} loop={true} muted={true}>
+                                    <source src={mediaUrl} type="video/mp4"/>
+                                </video>
+                            </CarouselItem>
+                        )
+                    )}
                 </ImagesContainer>
             </ImagesWrapper>
             {counter === images.length - 1 ? (
@@ -84,9 +132,18 @@ const ImagesContainer = styled.div`
 `
 
 const Image = styled.img`
+  position: relative;
   min-width: 100%;
   border-radius: var(--border-radius);
 
+  transition: 1s;
+
+  &:first-of-type {
+    margin-left: calc(var(--shift-amount) * -1);
+  }
+`
+
+const CarouselItem = styled.div`
   transition: 1s;
 
   &:first-of-type {
