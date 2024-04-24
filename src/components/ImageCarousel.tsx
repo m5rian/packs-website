@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import {HiChevronLeft, HiChevronRight} from "react-icons/hi";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import {FaVolumeHigh, FaVolumeXmark} from "react-icons/fa6";
 
 interface ComponentProps {
@@ -106,20 +106,6 @@ const Container = styled.div<{ counter: number }>`
   gap: .5rem;
 
   --shift-amount: ${props => props.counter * 100}%
-`
-
-const NavigationButton = styled.div`
-  font-size: 2rem;
-  color: var(--secondary-2);
-
-  display: flex;
-
-  //background-color: var(--primary-2);
-  //border-radius: var(--border-radius);
-`
-
-const DisabledNavigationButton = styled(NavigationButton)`
-  color: var(--secondary-4);
 `
 
 const ImagesWrapper = styled.div`
