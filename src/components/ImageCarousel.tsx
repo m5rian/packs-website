@@ -79,7 +79,7 @@ export default function ImageCarousel({images}: ComponentProps) {
                                 <button className="absolute z-10 right-2 bottom-2 bg-primary-2/75 hover:bg-primary-3/75 p-2 rounded-full text-2xl text-secondary-2 hover:text-secondary-1" onClick={toggleMute}>
                                     {muted ? <FaVolumeXmark/> : <FaVolumeHigh/>}
                                 </button>
-                                <video id={`media-${index}`} autoPlay={index === 0} loop={true} muted={true}>
+                                <video id={`media-${index}`} playsInline={true} autoPlay={index === 0} loop={true} muted={true}>
                                     <source src={mediaUrl} type="video/mp4"/>
                                 </video>
                             </CarouselItem>
