@@ -15,7 +15,8 @@ export default function FilterDropdown({label, icon, show, onClick, children}: C
 
     useEffect(() => {
         const handleClick = (event: MouseEvent) => {
-            if (show && ref.current && !ref.current.contains(event.target)) onClick();
+            const target = event.target as Node
+            if (show && ref.current && !ref.current.contains(target)) onClick();
         }
 
         window.addEventListener("click", handleClick);
