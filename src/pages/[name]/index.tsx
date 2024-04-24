@@ -63,6 +63,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     let rootPackDetails = await readFile(`${packFolderName}/pack.json`)
         .then(string => JSON.parse(string))
         .then(json => ({...json, folderName: packFolderName} as PackDetails))
+        .catch(_ => null)
+    if (!rootPackDetails) return {notFound: true}
+
     const isPackBundle = rootPackDetails.type === 1
 
     if (isPackBundle) {
